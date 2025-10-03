@@ -2,19 +2,29 @@ public class Profesor {
     private String nombre;
     private int hora;
     private String clase;
+    private String dia;
 
-    public Profesor(String nombre, int hora, String clase) {
+    public Profesor(String nombre, int hora, String clase, String dia) {
         this.nombre = nombre;
         this.hora = hora;
         this.clase = clase;
+        this.dia = dia;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDia() {
+        return dia;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDia(String dia) {
+        this.dia = dia;
+    }
+
+    public String getClase() {
+        return clase;
+    }
+
+    public void setClase(String clase) {
+        this.clase = clase;
     }
 
     public int getHora() {
@@ -25,11 +35,11 @@ public class Profesor {
         this.hora = hora;
     }
 
-    public String getClase() {
-        return clase;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setClase(String clase) {
-        this.clase = clase;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }
