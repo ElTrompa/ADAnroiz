@@ -20,5 +20,8 @@ public class Main {
 
         gestor.sustituirProfesor(ausente, hora, dia);
 
+        gestor.guardarHorarioConSustituciones();
+
+        System.out.println("Archivo 'HorarioConSustituciones.csv' generado correctamente.");
     }
 }
