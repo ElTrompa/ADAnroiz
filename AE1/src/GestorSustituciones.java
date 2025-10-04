@@ -39,7 +39,10 @@ public class GestorSustituciones {
         System.out.println("PROFESORES DISPONIBLE:");
 
         for(int i = 0; i < profesores.size(); i++) {
-            if(!nombre.equals(profesores.get(i).getNombre()) && hora == profesores.get(i).getHora() && dia.equals(profesores.get(i).getHora()) && profesores.get(i).getClase().equals("Libre")) {
+            if(!nombre.equals(profesores.get(i).getNombre()) &&
+                    hora == profesores.get(i).getHora() &&
+                    dia.equals(profesores.get(i).getDia()) &&
+                    profesores.get(i).getClase().equals("Libre")) {
                 System.out.println("- " + profesores.get(i).getNombre());
             }
         }
