@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -60,5 +57,33 @@ public class GestorSustituciones {
         }
 
         return profesorSustitudor;
+    }
+
+    public void guardarHorarioConSustituciones() throws IOException {
+        String nombreArchivo = "HorarioConSustituciones.csv";
+        File archivo = new File(nombreArchivo);
+
+        if (!archivo.exists()) {
+            boolean creado = archivo.createNewFile();
+            if (creado) {
+                System.out.println("Archivo '" + nombreArchivo + "' creado por primera vez.");
+            } else {
+                System.out.println("No se pudo crear el archivo '" + nombreArchivo + "'.");
+            }
+        } else {
+            System.out.println("El archivo '" + nombreArchivo + "' ya existe. Se sobrescribirá con los nuevos datos.");
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
+            bw.write("Nombre,Dia,Hora,Clase");
+            bw.newLine();
+
+            for (Profesor p : profesores) {
+                bw.write(p.getNombre() + "," + p.getDia() + "," + p.getHora() + "," + p.getClase());
+                bw.newLine();
+            }
+        }
+
+        System.out.println("Archivo '" + nombreArchivo + "' guardado correctamente.");
     }
 }
