@@ -9,7 +9,7 @@ public class Main {
         ArrayList<Profesor> lista = new ArrayList<>();
         GestorSustituciones gestor = new GestorSustituciones(lista);
 
-        gestor.cargarHorarios("AE1/horario.csv");
+        gestor.cargarHorarios("horario.csv");
 
         System.out.println("Introduce nombre del profesor ausente:");
         String ausente = teclado.next();
@@ -18,10 +18,12 @@ public class Main {
         System.out.println("Introduce hora:");
         int hora = teclado.nextInt();
 
-        gestor.sustituirProfesor(ausente, hora, dia);
+        String sustituto = gestor.sustituirProfesor(ausente, hora, dia);
 
-        gestor.guardarHorarioConSustituciones();
-
-        System.out.println("Archivo 'HorarioConSustituciones.csv' generado correctamente.");
+        if (sustituto != null) {
+            gestor.guardarHorarioConSustituciones();
+        } else {
+            System.out.println("No se ha realizado ninguna sustitución. No se guardará el archivo.");
+        }
     }
 }

@@ -47,29 +47,23 @@ public class GestorSustituciones {
 
         if (disponibles.isEmpty()) {
             System.out.println("No hay profesores disponibles para ese día y hora.");
-            return "ERROR";
+            return null;
         }
 
         System.out.println("¿Qué profesor quieres elegir?");
         String profesorSustituto = teclado.next();
 
-        boolean encontrado = false;
-
         for (Profesor p : disponibles) {
             if (profesorSustituto.equalsIgnoreCase(p.getNombre())) {
                 System.out.println("Profesor elegido para sustituir a " + nombre + " es " + profesorSustituto);
-                encontrado = true;
-                break;
+                return profesorSustituto;
             }
         }
 
-        if (!encontrado) {
-            System.out.println("El nombre introducido no coincide con ningún profesor disponible.");
-            profesorSustituto = "ERROR";
-        }
-
-        return profesorSustituto;
+        System.out.println("El nombre introducido no coincide con ningún profesor disponible.");
+        return null;
     }
+
 
     public void guardarHorarioConSustituciones() throws IOException {
         String nombreArchivo = "HorarioConSustituciones.csv";
