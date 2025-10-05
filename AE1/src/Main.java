@@ -9,7 +9,7 @@ public class Main {
         ArrayList<Profesor> lista = new ArrayList<>();
         GestorSustituciones gestor = new GestorSustituciones(lista);
 
-        gestor.cargarHorarios("Horario.csv");
+        gestor.cargarHorarios("AE1/horario.csv");
 
         System.out.println("Introduce nombre del profesor ausente:");
         String ausente = teclado.next();

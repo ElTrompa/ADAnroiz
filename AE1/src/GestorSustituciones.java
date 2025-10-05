@@ -31,48 +31,49 @@ public class GestorSustituciones {
     }
 
     public String sustituirProfesor(String nombre, int hora, String dia) {
-        String profesorSustitudor = "";
+        System.out.println("PROFESORES DISPONIBLES:");
 
-        System.out.println("PROFESORES DISPONIBLE:");
+        ArrayList<Profesor> disponibles = new ArrayList<>();
 
-        for(int i = 0; i < profesores.size(); i++) {
-            if(!nombre.equals(profesores.get(i).getNombre()) &&
-                    hora == profesores.get(i).getHora() &&
-                    dia.equals(profesores.get(i).getDia()) &&
-                    profesores.get(i).getClase().equals("Libre")) {
-                System.out.println("- " + profesores.get(i).getNombre());
+        for (Profesor p : profesores) {
+            if (!nombre.equalsIgnoreCase(p.getNombre()) &&
+                    hora == p.getHora() &&
+                    dia.equalsIgnoreCase(p.getDia()) &&
+                    p.getClase().equalsIgnoreCase("Libre")) {
+                System.out.println("- " + p.getNombre());
+                disponibles.add(p);
             }
         }
 
-        System.out.println("¿Que profesor quieres elegir?");
-        profesorSustitudor = teclado.next();
+        if (disponibles.isEmpty()) {
+            System.out.println("No hay profesores disponibles para ese día y hora.");
+            return "ERROR";
+        }
 
-        for(int i = 0; i < profesores.size(); i++) {
-            if (profesorSustitudor.equals(profesores.get(i).getNombre()) && hora == profesores.get(i).getHora() && dia.equals(profesores.get(i).getHora()) && profesores.get(i).getClase().equals("Libre")) {
-                System.out.println("Profesor elegido para sustituir a " + nombre + " es " + profesorSustitudor);
-            } else {
-                System.out.println("Algo a salido mal");
-                profesorSustitudor = "ERROR";
+        System.out.println("¿Qué profesor quieres elegir?");
+        String profesorSustituto = teclado.next();
+
+        boolean encontrado = false;
+
+        for (Profesor p : disponibles) {
+            if (profesorSustituto.equalsIgnoreCase(p.getNombre())) {
+                System.out.println("Profesor elegido para sustituir a " + nombre + " es " + profesorSustituto);
+                encontrado = true;
+                break;
             }
         }
 
-        return profesorSustitudor;
+        if (!encontrado) {
+            System.out.println("El nombre introducido no coincide con ningún profesor disponible.");
+            profesorSustituto = "ERROR";
+        }
+
+        return profesorSustituto;
     }
 
     public void guardarHorarioConSustituciones() throws IOException {
         String nombreArchivo = "HorarioConSustituciones.csv";
         File archivo = new File(nombreArchivo);
-
-        if (!archivo.exists()) {
-            boolean creado = archivo.createNewFile();
-            if (creado) {
-                System.out.println("Archivo '" + nombreArchivo + "' creado por primera vez.");
-            } else {
-                System.out.println("No se pudo crear el archivo '" + nombreArchivo + "'.");
-            }
-        } else {
-            System.out.println("El archivo '" + nombreArchivo + "' ya existe. Se sobrescribirá con los nuevos datos.");
-        }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
             bw.write("Nombre,Dia,Hora,Clase");
@@ -84,6 +85,6 @@ public class GestorSustituciones {
             }
         }
 
-        System.out.println("Archivo '" + nombreArchivo + "' guardado correctamente.");
+        System.out.println("Horario con sustituciones guardado en '" + nombreArchivo + "'.");
     }
 }

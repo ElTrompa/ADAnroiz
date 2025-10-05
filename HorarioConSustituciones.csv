@@ -1,4 +1,4 @@
-Profesor,Dia,Hora,Grupo
+Nombre,Dia,Hora,Clase
 Garcia,Lunes,1,1A
 Garcia,Lunes,2,1A
 Garcia,Lunes,3,LIBRE
@@ -29,7 +29,6 @@ Garcia,Viernes,3,3C
 Garcia,Viernes,4,LIBRE
 Garcia,Viernes,5,1A
 Garcia,Viernes,6,LIBRE
-
 Martinez,Lunes,1,LIBRE
 Martinez,Lunes,2,2A
 Martinez,Lunes,3,2A
@@ -60,7 +59,6 @@ Martinez,Viernes,3,LIBRE
 Martinez,Viernes,4,3B
 Martinez,Viernes,5,1A
 Martinez,Viernes,6,LIBRE
-
 Lopez,Lunes,1,3A
 Lopez,Lunes,2,LIBRE
 Lopez,Lunes,3,1B
@@ -91,7 +89,6 @@ Lopez,Viernes,3,2C
 Lopez,Viernes,4,LIBRE
 Lopez,Viernes,5,1B
 Lopez,Viernes,6,3C
-
 Sanchez,Lunes,1,LIBRE
 Sanchez,Lunes,2,LIBRE
 Sanchez,Lunes,3,4A
@@ -122,7 +119,6 @@ Sanchez,Viernes,3,2C
 Sanchez,Viernes,4,LIBRE
 Sanchez,Viernes,5,LIBRE
 Sanchez,Viernes,6,3B
-
 Perez,Lunes,1,2C
 Perez,Lunes,2,2C
 Perez,Lunes,3,LIBRE
@@ -153,7 +149,6 @@ Perez,Viernes,3,LIBRE
 Perez,Viernes,4,3C
 Perez,Viernes,5,LIBRE
 Perez,Viernes,6,1A
-
 Ruiz,Lunes,1,LIBRE
 Ruiz,Lunes,2,1A
 Ruiz,Lunes,3,LIBRE
@@ -184,7 +179,6 @@ Ruiz,Viernes,3,LIBRE
 Ruiz,Viernes,4,2B
 Ruiz,Viernes,5,1C
 Ruiz,Viernes,6,LIBRE
-
 Torres,Lunes,1,LIBRE
 Torres,Lunes,2,LIBRE
 Torres,Lunes,3,1C
@@ -215,7 +209,6 @@ Torres,Viernes,3,2A
 Torres,Viernes,4,LIBRE
 Torres,Viernes,5,3B
 Torres,Viernes,6,LIBRE
-
 Ramirez,Lunes,1,LIBRE
 Ramirez,Lunes,2,3A
 Ramirez,Lunes,3,LIBRE
@@ -246,7 +239,6 @@ Ramirez,Viernes,3,1A
 Ramirez,Viernes,4,LIBRE
 Ramirez,Viernes,5,LIBRE
 Ramirez,Viernes,6,3C
-
 Molina,Lunes,1,1B
 Molina,Lunes,2,1B
 Molina,Lunes,3,LIBRE
@@ -277,7 +269,6 @@ Molina,Viernes,3,LIBRE
 Molina,Viernes,4,LIBRE
 Molina,Viernes,5,3B
 Molina,Viernes,6,1C
-
 Jimenez,Lunes,1,LIBRE
 Jimenez,Lunes,2,2A
 Jimenez,Lunes,3,2A
