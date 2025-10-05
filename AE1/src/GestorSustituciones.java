@@ -11,6 +11,37 @@ public class GestorSustituciones {
         this.profesores = profesores;
     }
 
+    public void realizarSustitucion() throws IOException {
+        System.out.println("Introduce nombre del profesor ausente:");
+        String ausente = teclado.nextLine().toLowerCase();
+
+        System.out.println("Introduce día de la semana:");
+        String dia = teclado.nextLine().toLowerCase();
+
+        if (!dia.equals("lunes") && !dia.equals("martes") && !dia.equals("miercoles") &&
+                !dia.equals("jueves") && !dia.equals("viernes")) {
+            System.out.println("Día no válido. Debe ser de lunes a viernes.");
+            return;
+        }
+
+        System.out.println("Introduce hora (1 a 6):");
+        int hora = teclado.nextInt();
+        teclado.nextLine();
+
+        if (hora < 1 || hora > 6) {
+            System.out.println("Hora no válida. Debe estar entre 1 a 6.");
+            return;
+        }
+
+        String sustituto = sustituirProfesor(ausente, hora, dia);
+
+        if (sustituto != null) {
+            guardarHorarioConSustituciones();
+        } else {
+            System.out.println("No se ha realizado ninguna sustitución. No se guardará el archivo.");
+        }
+    }
+
     public void cargarHorarios(String ficheroHorario) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheroHorario))) {
             String linea;
