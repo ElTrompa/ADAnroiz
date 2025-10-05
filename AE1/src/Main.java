@@ -11,19 +11,51 @@ public class Main {
 
         gestor.cargarHorarios("horario.csv");
 
-        System.out.println("Introduce nombre del profesor ausente:");
-        String ausente = teclado.next();
-        System.out.println("Introduce dia de la semana:");
-        String dia = teclado.next();
-        System.out.println("Introduce hora:");
-        int hora = teclado.nextInt();
+        int opcion = 0;
+        do {
+            System.out.println("Quieres sustituir a alguien?\n0.Salir\n1.Sustituir");
+            opcion = teclado.nextInt();
 
-        String sustituto = gestor.sustituirProfesor(ausente, hora, dia);
+            if (opcion == 1) {
+                System.out.println("Introduce nombre del profesor ausente:");
+                String ausente = teclado.next().toLowerCase();
+                System.out.println("Introduce dia de la semana:");
+                String Insertadodia = teclado.next().toLowerCase();
+                String dia = "";
+                if (Insertadodia.equals("lunes") ||
+                        Insertadodia.equals("martes") ||
+                        Insertadodia.equals("miercoles") ||
+                        Insertadodia.equals("jueves") ||
+                        Insertadodia.equals("viernes")) {
+                    dia = Insertadodia;
+                }else {
+                    System.out.println("Introduce bien el dia bien");
+                    continue;
+                }
 
-        if (sustituto != null) {
-            gestor.guardarHorarioConSustituciones();
-        } else {
-            System.out.println("No se ha realizado ninguna sustitución. No se guardará el archivo.");
-        }
+                System.out.println("Introduce hora:");
+                int Insetadahora = teclado.nextInt();
+                int hora = 0;
+
+                if (Insetadahora >= 1 || Insetadahora <= 6) {
+                    hora = Insetadahora;
+                }else {
+                    System.out.println("Introduce bien la hora");
+                    continue;
+                }
+
+                String sustituto = gestor.sustituirProfesor(ausente, hora, dia);
+
+                if (sustituto != null) {
+                    gestor.guardarHorarioConSustituciones();
+                } else {
+                    System.out.println("No se ha realizado ninguna sustitución. No se guardará el archivo.");
+                }
+            }else if (opcion == 0) {
+                System.out.println("Adios");
+            }else {
+                System.out.println("Introduce solo los numeros 0 y 1");
+            }
+        }while (opcion != 0);
     }
 }
