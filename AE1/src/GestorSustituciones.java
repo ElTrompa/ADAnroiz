@@ -15,6 +15,19 @@ public class GestorSustituciones {
         System.out.println("Introduce nombre del profesor ausente:");
         String ausente = teclado.nextLine().toLowerCase();
 
+        boolean existe = false;
+        for (Profesor p : profesores) {
+            if (ausente.equalsIgnoreCase(p.getNombre())) {
+                existe = true;
+                break;
+            }
+        }
+
+        if (!existe) {
+            System.out.println("No existe el profesor");
+            return;
+        }
+
         System.out.println("Introduce día de la semana:");
         String dia = teclado.nextLine().toLowerCase();
 
