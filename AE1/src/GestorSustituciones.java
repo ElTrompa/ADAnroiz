@@ -59,6 +59,7 @@ public class GestorSustituciones {
         try (BufferedReader br = new BufferedReader(new FileReader(ficheroHorario))) {
             String linea;
             while((linea = br.readLine()) != null) {
+
                 if (linea.trim().isEmpty()) continue;
                 String[] datos = linea.split(",");
                 if (datos.length < 4) continue;
