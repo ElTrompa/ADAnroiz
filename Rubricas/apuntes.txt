@@ -1,0 +1,20 @@
+Instrucciones
+El ejercicio consta de dos ficheros iniciales:
+
+nombres.txt - donde se encuentran todos los nombres de los alumnos que van a ser evaluados
+rúbrica.txt - aquí se encuentra la rúbrica propiamente dicha, la primera línea puede ser las notas y las siguientes son las condiciones que tienen que cumplir para tener cada pregunta.
+Pregunta;explicación1;explicación2...
+
+Situación de programa deseado:
+vas a e evaluar al alumnos Nombre Apellido1 Apellido2
+
+Primera pregunta
+100 - Requisitos
+66 - requisitos
+33 - requisitos
+0 - requisitos
+-Primera respuesta introducida 1
+
+Introducir la primera respuesta y se tiene que almacenar en el fichero nombres.txt
+
+Nombre;Apellido1;Apellido2;100;.......
