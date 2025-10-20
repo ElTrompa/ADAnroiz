@@ -1,0 +1,6 @@
+Pregunta;100;66;33;0
+Pregunta 1;100 - Cumple todo;66 - Parcialmente;33 - Poco;0 - Nada
+Pregunta 2;100 - Excelente;50 - Regular;0 - Deficiente
+Pregunta 3;100 - Dominio total del tema;75 - Buen manejo;50 - Aceptable;25 - Insuficiente;0 - No responde
+Pregunta 4;100 - Presentacion impecable;70 - Presentacion adecuada;40 - Necesita mejorar;0 - Deficiente
+Pregunta 5;100 - Argumentos solidos y claros;66 - Argumentos aceptables;33 - Argumentos debiles;0 - Sin argumentos
