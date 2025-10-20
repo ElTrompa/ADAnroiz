@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -11,7 +9,7 @@ public class Evaluador {
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
             while ((linea = br.readLine()) != null) {
-                if(linea.trim().isEmpty()) continue;
+                if (linea.trim().isEmpty()) continue;
                 String[] partes = linea.split(";");
                 lista.add(Arrays.toString(partes));
             }
@@ -40,5 +38,42 @@ public class Evaluador {
         }
 
         return lista;
+    }
+
+    public void guardarEvaluaciones(String ruta, String[] alumno, ArrayList<Integer> notas) throws IOException {
+        ArrayList<String> lineas = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                lineas.add(linea);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.join(";", alumno));
+        for (int nota : notas) {
+            sb.append(";").append(nota);
+        }
+
+        boolean remplazo = false;
+        for (int i = 0; i < lineas.size(); i++) {
+            if (lineas.get(i).startsWith(alumno[0] + ";" + alumno[1] + ";" + alumno[2])) {
+                lineas.set(i, sb.toString());
+                remplazo = true;
+                break;
+            }
+        }
+
+        if (!remplazo) {
+            lineas.add(sb.toString());
+        }
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
+            for (String l : lineas) {
+                bw.write(l);
+                bw.newLine();
+            }
+        }
     }
 }
