@@ -22,5 +22,5 @@ Patricia;Leon;Gallardo
 Daniel;Ruiz;Lozano
 Beatriz;Gil;Cortes
 Andres;Romero;Soto
-Monica;Lopez;Vidal
+Monica;Lopez;Vidal;1;2;3;3;3;2;233;4;2;2
 Alberto;Torres;Pascual
