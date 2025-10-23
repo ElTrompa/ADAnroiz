@@ -18,9 +18,7 @@ public class Evaluador {
                     continue;
                 }
 
-                String[] partes = linea.split(";");
-
-                lista.add(Arrays.toString(partes));
+                lista.add(linea);
             }
         }
 
@@ -42,7 +40,7 @@ public class Evaluador {
                 }
 
                 String[] partes = linea.split(";");
-                lista.add(Arrays.toString(partes));
+                lista.add(linea);
             }
         }
 
@@ -66,25 +64,24 @@ public class Evaluador {
         int total = Math.round((float) suma / notas.size());
         String totalStr = "Total:" + total;
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.join(";", alumno));
+        String nuevaLinea = alumno[0] + ";" + alumno[1] + ";" + alumno[2];
         for (int nota : notas) {
-            sb.append(";").append(nota);
+            nuevaLinea += ";" + nota;
         }
-        sb.append(";").append(totalStr);
+        nuevaLinea += ";" + totalStr;
 
-        boolean remplazo = false;
+        boolean reemplazo = false;
 
         for (int i = 0; i < lineas.size(); i++) {
             if (lineas.get(i).startsWith(alumno[0] + ";" + alumno[1] + ";" + alumno[2])) {
-                lineas.set(i, sb.toString());
-                remplazo = true;
+                lineas.set(i, nuevaLinea);
+                reemplazo = true;
                 break;
             }
         }
 
-        if (!remplazo) {
-            lineas.add(sb.toString());
+        if (!reemplazo) {
+            lineas.add(nuevaLinea);
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {

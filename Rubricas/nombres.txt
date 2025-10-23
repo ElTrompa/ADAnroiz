@@ -10,7 +10,7 @@ Elena;Romero;Cruz;66;100;100;100;66;Total:86
 Pablo;Gutierrez;Vega;33;66;33;66;33;Total:46
 Ana;Herrera;Flores;100;100;66;100;100;Total:93
 Javier;Castillo;Molina;100;33;33;66;33;Total:53
-Cristina;Ortega;Ramos;66;100;66;100;33;Total:73;100;100;100;100;100;Total:100
+Cristina;Ortega;Ramos;66;100;66;100;33;Total:73
 Miguel;Vazquez;Suarez;100;100;100;100;100;Total:100
 Isabel;Marin;Blanco;33;33;66;100;33;Total:53
 Alejandro;Iglesias;Cabrera;66;66;66;66;66;Total:66
@@ -22,5 +22,4 @@ Patricia;Leon;Gallardo;100;66;33;100;66;Total:73
 Daniel;Ruiz;Lozano;100;100;100;66;100;Total:93
 Beatriz;Gil;Cortes;33;66;100;33;66;Total:60
 Andres;Romero;Soto;100;66;33;100;33;Total:66
-Monica;Lopez;Vidal;66;100;100;66;100;Total:86
-Alberto;Torres;Pascual;33;33;66;100;66;Total:60;100;100;100;100;100;Total:100;0;0;0;0;0;Total:0
+Monica;Lopez;Vidal;0;0;0;0;0;Total:0

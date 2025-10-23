@@ -28,7 +28,7 @@ public class Main {
                     teclado.nextLine();
 
                     String alumnoLinea = alumnos.get(index - 1);
-                    String[] alumno = alumnoLinea.replace("", "").replace("", "").split(",\\s*");
+                    String[] alumno = alumnoLinea.split(";");
 
                     System.out.println("\nEvaluando a: " + alumno[0] + " " + alumno[1] + " " + alumno[2]);
 
