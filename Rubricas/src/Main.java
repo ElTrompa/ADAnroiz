@@ -39,14 +39,28 @@ public class Main {
                     for (String linea : rubrica) {
                         String[] partes = linea.replace("[", "").replace("]", "").split(",\\s*");
 
-                        System.out.println("\n" + partes[0]); // Pregunta
+                        System.out.println("\n" + partes[0]);
                         System.out.println("Opciones de nota: 100, 66, 33, 0");
 
                         System.out.print("Introduce la nota para esta pregunta: ");
                         int nota = teclado.nextInt();
-                        teclado.nextLine();
 
-                        notas.add(nota);
+                        if (nota == 100 || nota == 66 || nota == 33 || nota == 0) {
+                            notas.add(nota);
+                        }else {
+                            boolean parar = false;
+
+                            do {
+                                System.out.println("Recuerda opciones de nota: 100, 66, 33, 0");
+                                nota = teclado.nextInt();
+                                teclado.nextLine();
+
+                                if (nota == 100 || nota == 66 || nota == 33 || nota == 0) {
+                                    notas.add(nota);
+                                    parar = true;
+                                }
+                            } while (!parar);
+                        }
                     }
 
                     evaluador.guardarEvaluaciones("nombres.txt", alumno, notas);
