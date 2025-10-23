@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="main y nombres.txt">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+    <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="comprobacio de nota">
+      <change beforePath="$PROJECT_DIR$/nombres.txt" beforeDir="false" afterPath="$PROJECT_DIR$/nombres.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +95,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761240334672</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="comprobacio de nota">
+      <option name="closed" value="true" />
+      <created>1761241498862</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1761241498862</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -104,6 +111,7 @@
     <MESSAGE value="update" />
     <MESSAGE value="Evaluador" />
     <MESSAGE value="main y nombres.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="main y nombres.txt" />
+    <MESSAGE value="comprobacio de nota" />
+    <option name="LAST_COMMIT_MESSAGE" value="comprobacio de nota" />
   </component>
 </project>
