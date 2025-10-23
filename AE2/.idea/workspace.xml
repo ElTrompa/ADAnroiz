@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="sumatorio">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="arreglo">
       <change beforePath="$PROJECT_DIR$/nombres.txt" beforeDir="false" afterPath="$PROJECT_DIR$/nombres.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Evaluador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Evaluador.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761246285797</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="arreglo">
+      <option name="closed" value="true" />
+      <created>1761249262980</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1761249262980</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -132,6 +138,7 @@
     <MESSAGE value="comprobacio de nota" />
     <MESSAGE value="nombres.txt con notas totales" />
     <MESSAGE value="sumatorio" />
-    <option name="LAST_COMMIT_MESSAGE" value="sumatorio" />
+    <MESSAGE value="arreglo" />
+    <option name="LAST_COMMIT_MESSAGE" value="arreglo" />
   </component>
 </project>

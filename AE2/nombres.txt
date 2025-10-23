@@ -22,4 +22,4 @@ Patricia;Leon;Gallardo;100;66;33;100;66;Total:73
 Daniel;Ruiz;Lozano;100;100;100;66;100;Total:93
 Beatriz;Gil;Cortes;33;66;100;33;66;Total:60
 Andres;Romero;Soto;100;66;33;100;33;Total:66
-Monica;Lopez;Vidal;0;0;0;0;0;Total:0
+Monica;Lopez;Vidal;33;66;100;0;0;Total:40
