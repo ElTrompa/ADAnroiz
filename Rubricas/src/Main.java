@@ -2,11 +2,13 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Evaluador evaluador = new Evaluador();
         Scanner teclado = new Scanner(System.in);
 
         int opcion = 0;
+        ArrayList<String> alumnos = evaluador.leerNombres("nombres.txt");
+        ArrayList<String> rubrica = evaluador.leerRubica("rubrica.txt");
 
         do {
             System.out.println("=== SISTEMA DE EVALUACION ===");
@@ -15,10 +17,6 @@ public class Main {
 
             if (opcion != 0) {
                 try {
-                    ArrayList<String> alumnos = evaluador.leerNombres("nombres.txt");
-                    ArrayList<String> rubrica = evaluador.leerRubica("rubrica.txt");
-
-
                     System.out.println("Alumnos disponibles:");
 
                     for (int i = 0; i < alumnos.size(); i++) {
@@ -30,14 +28,14 @@ public class Main {
                     teclado.nextLine();
 
                     String alumnoLinea = alumnos.get(index - 1);
-                    String[] alumno = alumnoLinea.replace("[", "").replace("]", "").split(",\\s*");
+                    String[] alumno = alumnoLinea.replace("", "").replace("", "").split(",\\s*");
 
                     System.out.println("\nEvaluando a: " + alumno[0] + " " + alumno[1] + " " + alumno[2]);
 
                     ArrayList<Integer> notas = new ArrayList<>();
 
                     for (String linea : rubrica) {
-                        String[] partes = linea.replace("[", "").replace("]", "").split(",\\s*");
+                        String[] partes = linea.replace("", "").replace("", "").split(",\\s*");
 
                         System.out.println("\n" + partes[0]);
                         System.out.println("Opciones de nota: 100, 66, 33, 0");
@@ -72,7 +70,13 @@ public class Main {
                     System.err.println("Error general: " + e.getMessage());
                 }
             }else {
-                System.out.println("Adios");
+                alumnos = evaluador.leerNombres("nombres.txt");
+
+                System.out.println("Alumnos y nota");
+
+                for (int i = 0; i < alumnos.size(); i++) {
+                    System.out.println((i + 1) + ". " + alumnos.get(i));
+                }
             }
         }while (opcion != 0);
 

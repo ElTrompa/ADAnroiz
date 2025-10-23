@@ -8,9 +8,18 @@ public class Evaluador {
 
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            boolean primera = true;
+
             while ((linea = br.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
+
+                if (primera) {
+                    primera = false;
+                    continue;
+                }
+
                 String[] partes = linea.split(";");
+
                 lista.add(Arrays.toString(partes));
             }
         }
@@ -50,13 +59,22 @@ public class Evaluador {
             }
         }
 
+        int suma = 0;
+        for (int nota : notas) {
+            suma += nota;
+        }
+        int total = Math.round((float) suma / notas.size());
+        String totalStr = "Total:" + total;
+
         StringBuilder sb = new StringBuilder();
         sb.append(String.join(";", alumno));
         for (int nota : notas) {
             sb.append(";").append(nota);
         }
+        sb.append(";").append(totalStr);
 
         boolean remplazo = false;
+
         for (int i = 0; i < lineas.size(); i++) {
             if (lineas.get(i).startsWith(alumno[0] + ";" + alumno[1] + ";" + alumno[2])) {
                 lineas.set(i, sb.toString());
