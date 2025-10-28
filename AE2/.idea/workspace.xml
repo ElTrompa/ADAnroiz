@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD:Rubricas/.idea/workspace.xml
     <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+=======
+    <list default="true" id="26041eea-cc0f-4f6f-801f-1576c4060b9d" name="Changes" comment="arreglo">
+      <change beforePath="$PROJECT_DIR$/nombres.txt" beforeDir="false" afterPath="$PROJECT_DIR$/nombres.txt" afterDir="false" />
+>>>>>>> 724a354aa03dd4dc793e1c038bc05adcbfbff142:AE2/.idea/workspace.xml
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,12 +33,12 @@
     &quot;assignee&quot;: &quot;ElTrompa&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ElTrompa/ADAnroiz.git&quot;,
-    &quot;accountId&quot;: &quot;40327094-b6a5-49ae-b7f6-a075f005980b&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ElTrompa/ADAnroiz.git",
+    "accountId": "d720ff44-5d6d-49f1-b6f9-341a052154ed"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 5
@@ -87,6 +92,7 @@
       <option name="project" value="LOCAL" />
       <updated>1760972948114</updated>
     </task>
+<<<<<<< HEAD:Rubricas/.idea/workspace.xml
     <task id="LOCAL-00004" summary="update">
       <option name="closed" value="true" />
       <created>1761212249807</created>
@@ -96,12 +102,64 @@
       <updated>1761212249807</updated>
     </task>
     <option name="localTasksCounter" value="5" />
+=======
+    <task id="LOCAL-00004" summary="main y nombres.txt">
+      <option name="closed" value="true" />
+      <created>1761240334672</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1761240334672</updated>
+    </task>
+    <task id="LOCAL-00005" summary="comprobacio de nota">
+      <option name="closed" value="true" />
+      <created>1761241498862</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1761241498862</updated>
+    </task>
+    <task id="LOCAL-00006" summary="nombres.txt con notas totales">
+      <option name="closed" value="true" />
+      <created>1761241758196</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1761241758196</updated>
+    </task>
+    <task id="LOCAL-00007" summary="sumatorio">
+      <option name="closed" value="true" />
+      <created>1761246285797</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1761246285797</updated>
+    </task>
+    <task id="LOCAL-00008" summary="arreglo">
+      <option name="closed" value="true" />
+      <created>1761249262980</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1761249262980</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+>>>>>>> 724a354aa03dd4dc793e1c038bc05adcbfbff142:AE2/.idea/workspace.xml
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="rubrica.txt" />
     <MESSAGE value="Evaluador" />
+<<<<<<< HEAD:Rubricas/.idea/workspace.xml
     <MESSAGE value="update" />
     <option name="LAST_COMMIT_MESSAGE" value="update" />
+=======
+    <MESSAGE value="main y nombres.txt" />
+    <MESSAGE value="comprobacio de nota" />
+    <MESSAGE value="nombres.txt con notas totales" />
+    <MESSAGE value="sumatorio" />
+    <MESSAGE value="arreglo" />
+    <option name="LAST_COMMIT_MESSAGE" value="arreglo" />
+>>>>>>> 724a354aa03dd4dc793e1c038bc05adcbfbff142:AE2/.idea/workspace.xml
   </component>
 </project>

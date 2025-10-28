@@ -8,10 +8,17 @@ public class Evaluador {
 
         try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
             String linea;
+            boolean primera = true;
+
             while ((linea = br.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
-                String[] partes = linea.split(";");
-                lista.add(Arrays.toString(partes));
+
+                if (primera) {
+                    primera = false;
+                    continue;
+                }
+
+                lista.add(linea);
             }
         }
 
@@ -33,7 +40,7 @@ public class Evaluador {
                 }
 
                 String[] partes = linea.split(";");
-                lista.add(Arrays.toString(partes));
+                lista.add(linea);
             }
         }
 
@@ -50,23 +57,31 @@ public class Evaluador {
             }
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.join(";", alumno));
+        int suma = 0;
         for (int nota : notas) {
-            sb.append(";").append(nota);
+            suma += nota;
         }
+        int total = Math.round((float) suma / notas.size());
+        String totalStr = "Total:" + total;
 
-        boolean remplazo = false;
+        String nuevaLinea = alumno[0] + ";" + alumno[1] + ";" + alumno[2];
+        for (int nota : notas) {
+            nuevaLinea += ";" + nota;
+        }
+        nuevaLinea += ";" + totalStr;
+
+        boolean reemplazo = false;
+
         for (int i = 0; i < lineas.size(); i++) {
             if (lineas.get(i).startsWith(alumno[0] + ";" + alumno[1] + ";" + alumno[2])) {
-                lineas.set(i, sb.toString());
-                remplazo = true;
+                lineas.set(i, nuevaLinea);
+                reemplazo = true;
                 break;
             }
         }
 
-        if (!remplazo) {
-            lineas.add(sb.toString());
+        if (!reemplazo) {
+            lineas.add(nuevaLinea);
         }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ruta))) {
