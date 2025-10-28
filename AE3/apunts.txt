@@ -19,3 +19,28 @@ Adjunto captura de la pizarra
 Cualquier cosa me decís.
 
 Nombre del directorio dentro del repositorio: AE3
+
+
+CRUD:
+Alumnos.xml
+<nombre>
+<curso>
+<DNI>
+<fecha nacimiento>
+<correo padres>
+<nombre padre>
+<nombre madre>
+
+Asignaturas.xml
+<nombre>
+<cursos>
+<horas>
+<profe imparte>
+
+Ausencias.xml
+<Timespand>
+<asignatura>
+<alumno>
+<justificada>
+<tipo>
+<curso>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<asignaturas>
+  <asignatura id="S001">
+    <nombre>Matemáticas</nombre>
+    <cursos>1ºESO,2ºESO</cursos>
+    <horas>4</horas>
+    <profe_imparte>Laura Fernández</profe_imparte>
+  </asignatura>
+  <asignatura id="S002">
+    <nombre>Lengua</nombre>
+    <cursos>1ºESO,2ºESO,1ºBachiller</cursos>
+    <horas>3</horas>
+    <profe_imparte>Raúl Gómez</profe_imparte>
+  </asignatura>
+  <asignatura id="S003">
+    <nombre>Física</nombre>
+    <cursos>1ºBachiller</cursos>
+    <horas>4</horas>
+    <profe_imparte>Isabel Torres</profe_imparte>
+  </asignatura>
+</asignaturas>

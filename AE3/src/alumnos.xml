@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<alumnos>
+  <alumno id="A001">
+    <nombre>Lucía García</nombre>
+    <curso>1ºESO</curso>
+    <DNI>12345678L</DNI>
+    <fecha_nacimiento>2025-10-20</fecha_nacimiento>
+    <correo_padres>padres.lucia@example.com</correo_padres>
+    <nombre_padre>Javier García</nombre_padre>
+    <nombre_madre>María López</nombre_madre>
+  </alumno>
+  <alumno id="A002">
+    <nombre>Diego Martínez</nombre>
+    <curso>2ºESO</curso>
+    <DNI>87654321M</DNI>
+    <fecha_mantenimiento>2025-09-12</fecha_mantenimiento>
+    <correo_padres>padres.diego@example.com</correo_padres>
+    <nombre_padre>Fernando Martínez</nombre_padre>
+    <nombre_madre>Ana Ruiz</nombre_madre>
+  </alumno>
+  <alumno id="A003">
+    <nombre>María Pérez</nombre>
+    <curso>1ºBachiller</curso>
+    <DNI>11223344N</DNI>
+    <fecha_mantenimiento>2025-10-01</fecha_mantenimiento>
+    <correo_padres>padres.maria@example.com</correo_padres>
+    <nombre_padre>Carlos Pérez</nombre_padre>
+    <nombre_madre>Elena Sánchez</nombre_madre>
+  </alumno>
+</alumnos>
