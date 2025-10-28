@@ -1,0 +1,21 @@
+Ejercicio de clase gestión de faltas de alumnos
+Vence el 30 de octubre de 2025 22:59
+Apto/NoApto
+Instrucciones
+Ejercicio de programación:
+
+Se trata de trabajar con diferentes ficheros XML
+alumnos.xml
+asignaturas.xml
+ausencias.xml
+
+Se tiene que poder hacer CRUD sobre todos los ficheros anteriores
+
+El más interesante es ausencias.xml en el cual se tiene que almacenar toda falta de un alumno con el objetivo final de poder una falta y que llegue a los padres por correo electrónico (con que se muestre el formato final del correo es suficiente)
+
+Adjunto captura de la pizarra
+
+
+Cualquier cosa me decís.
+
+Nombre del directorio dentro del repositorio: AE3
