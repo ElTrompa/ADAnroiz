@@ -17,6 +17,9 @@ public class Alumno {
         this.nombre = nombre;
     }
 
+    public Alumno(String nombre, String curso, int dni, String fechaNacimiento, String correoPadres, String nombrePadre, String nombreMadre) {
+    }
+
     public String getNombre() {
         return nombre;
     }

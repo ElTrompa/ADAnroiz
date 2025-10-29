@@ -19,6 +19,9 @@ public class Ausencias {
         this.curso = curso;
     }
 
+    public Ausencias(String timespand, String asignatura, String alumno, boolean justificada, String curso) {
+    }
+
     public String getFecha() {
         return fecha;
     }
