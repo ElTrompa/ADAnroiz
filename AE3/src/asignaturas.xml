@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <asignaturas>
-  <asignatura id="S001">
-    <nombre>Matemáticas</nombre>
-    <cursos>1ºESO,2ºESO</cursos>
-    <horas>4</horas>
-    <profe_imparte>Laura Fernández</profe_imparte>
-  </asignatura>
-  <asignatura id="S002">
-    <nombre>Lengua</nombre>
-    <cursos>1ºESO,2ºESO,1ºBachiller</cursos>
-    <horas>3</horas>
-    <profe_imparte>Raúl Gómez</profe_imparte>
-  </asignatura>
-  <asignatura id="S003">
-    <nombre>Física</nombre>
-    <cursos>1ºBachiller</cursos>
-    <horas>4</horas>
-    <profe_imparte>Isabel Torres</profe_imparte>
-  </asignatura>
+    <asignatura>
+        <nombre>Matematicas</nombre>
+        <cursos>1ESO,2ESO</cursos>
+        <horas>4</horas>
+        <profe_imparte>Laura Fernandez</profe_imparte>
+    </asignatura>
+    <asignatura>
+        <nombre>Lengua</nombre>
+        <cursos>1ESO,2ESO,3ESO,4ESO</cursos>
+        <horas>3</horas>
+        <profe_imparte>Raul Gomez</profe_imparte>
+    </asignatura>
+    <asignatura>
+        <nombre>Fisica</nombre>
+        <cursos>3ESO,4ESO,1BACH,2BACH</cursos>
+        <horas>4</horas>
+        <profe_imparte>Isabel Torres</profe_imparte>
+    </asignatura>
+    <asignatura>
+        <nombre>Historia</nombre>
+        <cursos>2ESO,3ESO,4ESO,1BACH</cursos>
+        <horas>3</horas>
+        <profe_imparte>Juan Ramirez</profe_imparte>
+    </asignatura>
+    <asignatura>
+        <nombre>Ingles</nombre>
+        <cursos>1ESO,2ESO,3ESO,4ESO,1BACH,2BACH</cursos>
+        <horas>3</horas>
+        <profe_imparte>Elena Garcia</profe_imparte>
+    </asignatura>
+    <asignatura>
+        <nombre>Biologia</nombre>
+        <cursos>1ESO,2ESO,3ESO,4ESO</cursos>
+        <horas>2</horas>
+        <profe_imparte>Sergio Lopez</profe_imparte>
+    </asignatura>
 </asignaturas>

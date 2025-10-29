@@ -1,30 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <alumnos>
-  <alumno id="A001">
-    <nombre>Lucía García</nombre>
-    <curso>1ºESO</curso>
-    <DNI>12345678L</DNI>
-    <fecha_nacimiento>2025-10-20</fecha_nacimiento>
-    <correo_padres>padres.lucia@example.com</correo_padres>
-    <nombre_padre>Javier García</nombre_padre>
-    <nombre_madre>María López</nombre_madre>
-  </alumno>
-  <alumno id="A002">
-    <nombre>Diego Martínez</nombre>
-    <curso>2ºESO</curso>
-    <DNI>87654321M</DNI>
-    <fecha_mantenimiento>2025-09-12</fecha_mantenimiento>
-    <correo_padres>padres.diego@example.com</correo_padres>
-    <nombre_padre>Fernando Martínez</nombre_padre>
-    <nombre_madre>Ana Ruiz</nombre_madre>
-  </alumno>
-  <alumno id="A003">
-    <nombre>María Pérez</nombre>
-    <curso>1ºBachiller</curso>
-    <DNI>11223344N</DNI>
-    <fecha_mantenimiento>2025-10-01</fecha_mantenimiento>
-    <correo_padres>padres.maria@example.com</correo_padres>
-    <nombre_padre>Carlos Pérez</nombre_padre>
-    <nombre_madre>Elena Sánchez</nombre_madre>
-  </alumno>
+    <alumno>
+        <nombre>Lucia Garcia</nombre>
+        <curso>1ESO</curso>
+        <DNI>12345678</DNI>
+        <fecha_nacimiento>2011-03-25</fecha_nacimiento>
+        <correo_padres>padres.lucia@example.com</correo_padres>
+        <nombre_padre>Javier Garcia</nombre_padre>
+        <nombre_madre>Maria Lopez</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Diego Martinez</nombre>
+        <curso>2ESO</curso>
+        <DNI>87654321</DNI>
+        <fecha_nacimiento>2010-05-11</fecha_nacimiento>
+        <correo_padres>padres.diego@example.com</correo_padres>
+        <nombre_padre>Fernando Martinez</nombre_padre>
+        <nombre_madre>Ana Ruiz</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Maria Perez</nombre>
+        <curso>1BACH</curso>
+        <DNI>11223344</DNI>
+        <fecha_nacimiento>2008-09-14</fecha_nacimiento>
+        <correo_padres>padres.maria@example.com</correo_padres>
+        <nombre_padre>Carlos Perez</nombre_padre>
+        <nombre_madre>Elena Sanchez</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Javier Ortega</nombre>
+        <curso>3ESO</curso>
+        <DNI>99887766</DNI>
+        <fecha_nacimiento>2009-01-12</fecha_nacimiento>
+        <correo_padres>padres.javier@example.com</correo_padres>
+        <nombre_padre>Antonio Ortega</nombre_padre>
+        <nombre_madre>Laura Diaz</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Paula Rivas</nombre>
+        <curso>4ESO</curso>
+        <DNI>44556677</DNI>
+        <fecha_nacimiento>2008-07-19</fecha_nacimiento>
+        <correo_padres>padres.paula@example.com</correo_padres>
+        <nombre_padre>Oscar Rivas</nombre_padre>
+        <nombre_madre>Patricia Martin</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Daniel Fernandez</nombre>
+        <curso>2BACH</curso>
+        <DNI>77889900</DNI>
+        <fecha_nacimiento>2007-11-04</fecha_nacimiento>
+        <correo_padres>padres.daniel@example.com</correo_padres>
+        <nombre_padre>Jose Fernandez</nombre_padre>
+        <nombre_madre>Clara Moya</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Sofia Torres</nombre>
+        <curso>1ESO</curso>
+        <DNI>55443322</DNI>
+        <fecha_nacimiento>2011-02-28</fecha_nacimiento>
+        <correo_padres>padres.sofia@example.com</correo_padres>
+        <nombre_padre>Ignacio Torres</nombre_padre>
+        <nombre_madre>Beatriz Gomez</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Alberto Ramos</nombre>
+        <curso>2ESO</curso>
+        <DNI>66557788</DNI>
+        <fecha_nacimiento>2010-06-03</fecha_nacimiento>
+        <correo_padres>padres.alberto@example.com</correo_padres>
+        <nombre_padre>Pedro Ramos</nombre_padre>
+        <nombre_madre>Isabel Cruz</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Carmen Vega</nombre>
+        <curso>4ESO</curso>
+        <DNI>22113344</DNI>
+        <fecha_nacimiento>2008-01-20</fecha_nacimiento>
+        <correo_padres>padres.carmen@example.com</correo_padres>
+        <nombre_padre>Rafael Vega</nombre_padre>
+        <nombre_madre>Teresa Blanco</nombre_madre>
+    </alumno>
+    <alumno>
+        <nombre>Pablo Navarro</nombre>
+        <curso>3ESO</curso>
+        <DNI>33445566</DNI>
+        <fecha_nacimiento>2009-10-08</fecha_nacimiento>
+        <correo_padres>padres.pablo@example.com</correo_padres>
+        <nombre_padre>Francisco Navarro</nombre_padre>
+        <nombre_madre>Raquel Soto</nombre_madre>
+    </alumno>
 </alumnos>
