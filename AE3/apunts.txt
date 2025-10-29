@@ -42,5 +42,4 @@ Ausencias.xml
 <asignatura>
 <alumno>
 <justificada>
-<tipo>
 <curso>

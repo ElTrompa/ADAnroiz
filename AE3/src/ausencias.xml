@@ -9,7 +9,6 @@
         <asignatura>Matematicas</asignatura>
         <alumno>Lucia Garcia</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>1ESO</curso>
     </ausencia>
     <ausencia>
@@ -21,7 +20,6 @@
         <asignatura>Lengua</asignatura>
         <alumno>Sofia Torres</alumno>
         <justificada>true</justificada>
-        <tipo>Retraso</tipo>
         <curso>1ESO</curso>
     </ausencia>
     <ausencia>
@@ -33,7 +31,6 @@
         <asignatura>Biologia</asignatura>
         <alumno>Diego Martinez</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>2ESO</curso>
     </ausencia>
     <ausencia>
@@ -45,7 +42,6 @@
         <asignatura>Historia</asignatura>
         <alumno>Pablo Navarro</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>3ESO</curso>
     </ausencia>
     <ausencia>
@@ -57,7 +53,6 @@
         <asignatura>Fisica</asignatura>
         <alumno>Maria Perez</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>1BACH</curso>
     </ausencia>
     <ausencia>
@@ -69,7 +64,6 @@
         <asignatura>Ingles</asignatura>
         <alumno>Daniel Fernandez</alumno>
         <justificada>true</justificada>
-        <tipo>Retraso</tipo>
         <curso>2BACH</curso>
     </ausencia>
     <ausencia>
@@ -81,7 +75,6 @@
         <asignatura>Lengua</asignatura>
         <alumno>Carmen Vega</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>4ESO</curso>
     </ausencia>
     <ausencia>
@@ -93,7 +86,6 @@
         <asignatura>Fisica</asignatura>
         <alumno>Paula Rivas</alumno>
         <justificada>false</justificada>
-        <tipo>Falta injustificada</tipo>
         <curso>4ESO</curso>
     </ausencia>
 </ausencias>

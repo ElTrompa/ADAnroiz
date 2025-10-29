@@ -7,6 +7,16 @@ public class Alumno {
     private String nombrePadre;
     private String nombreMadre;
 
+    public Alumno(String nombreMadre, String nombrePadre, String correoPadres, String fechaNacimiento, int dni, String curso, String nombre) {
+        this.nombreMadre = nombreMadre;
+        this.nombrePadre = nombrePadre;
+        this.correoPadres = correoPadres;
+        this.fechaNacimiento = fechaNacimiento;
+        this.dni = dni;
+        this.curso = curso;
+        this.nombre = nombre;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -63,13 +73,8 @@ public class Alumno {
         this.nombreMadre = nombreMadre;
     }
 
-    public Alumno(String nombreMadre, String nombrePadre, String correoPadres, String fechaNacimiento, int dni, String curso, String nombre) {
-        this.nombreMadre = nombreMadre;
-        this.nombrePadre = nombrePadre;
-        this.correoPadres = correoPadres;
-        this.fechaNacimiento = fechaNacimiento;
-        this.dni = dni;
-        this.curso = curso;
-        this.nombre = nombre;
+    @Override
+    public String toString() {
+        return nombre + " (" + curso + "), DNI: " + dni;
     }
 }
