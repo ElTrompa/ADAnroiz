@@ -15,7 +15,7 @@ public class Gestor {
     Scanner teclado = new Scanner(System.in);
 
     private static String rutaAlumnoXml = "alumnos.xml";
-    private String rutaAsignaturasXml = "asignaturas.xml";
+    private static String rutaAsignaturasXml = "asignaturas.xml";
     private static String rutaAusenciasXml = "ausencias.xml";
 
     public void menu() {
@@ -66,9 +66,31 @@ public class Gestor {
 
                 System.out.println("Nueva ausencia creada y guardada en ausencias.xml");
             }else if (opcion == 3) {//leer asignaturas
+                ArrayList<Asignaturas> leidas = leerAsignaturasXML();
+
+                System.out.println("\nAsignaturas leídas desde el XML:");
+                for (Asignaturas a : leidas) {
+                    System.out.println(a);
+                }
 
             }else if (opcion == 4) {//crear asignaturas
+                System.out.println("Dime el nombre:");
+                String nombre = teclado.next();
+                System.out.println("Dime los cursos:");
+                String cursos = teclado.next();
+                System.out.println("Dime las horas:");
+                int horas = teclado.nextInt();
+                System.out.println("Dime el profesor que imparte:");
+                String profe_imparte = teclado.next();
 
+                Asignaturas nueva = new Asignaturas(nombre, cursos, horas, profe_imparte);
+
+                ArrayList<Asignaturas> lista = new ArrayList<>();
+                lista.add(nueva);
+
+                guardarAsignaturasXML(lista);
+
+                System.out.println("Nueva asignatura creada y guardada en asignaturas.xml");
             }else if (opcion == 5) { // Registrar ausencias
                 System.out.println("Dime la fecha:");
                 String fecha = teclado.next();
@@ -102,7 +124,7 @@ public class Gestor {
                     System.out.println(a);
                 }
             }else if (opcion == 0) {
-
+                System.out.println("Saliendo...");
             }else {
                 System.err.println("Error en opcion");
             }
@@ -225,6 +247,58 @@ public class Gestor {
 
             writer.write("</alumnos>\n");
             System.out.println("Archivo XML guardado correctamente en: " + rutaAlumnoXml);
+
+        } catch (IOException e) {
+            System.out.println("Error guardar");
+        }
+    }
+
+    //Asignaturas
+    public static ArrayList<Asignaturas> leerAsignaturasXML () {
+        ArrayList<Asignaturas> lista = new ArrayList<>();
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(rutaAsignaturasXml));
+            doc.getDocumentElement().normalize();
+
+            NodeList nodos = doc.getElementsByTagName("asignatura");
+
+            for (int i = 0; i < nodos.getLength(); i++) {
+                Element e = (Element) nodos.item(i);
+
+                Asignaturas a = new Asignaturas(
+                        getTagValue(e, "nombre"),
+                        getTagValue(e, "cursos"),
+                        Integer.parseInt(getTagValue(e, "horas")),
+                        getTagValue(e, "profe_imparte")
+                );
+
+                lista.add(a);
+            }
+        }catch (Exception e) {
+            System.err.println("Error leer");
+        }
+
+        return lista;
+    }
+
+    public static void guardarAsignaturasXML (ArrayList<Asignaturas> lista) {
+        try (FileWriter writer = new FileWriter(rutaAsignaturasXml)) {
+            writer.write("<asignaturas>\n");
+
+            for (Asignaturas a : lista) {
+                writer.write("  <asignatura>\n");
+                writer.write("    <nombre>" + a.getNombreAsignatura() + "</nombre>\n");
+                writer.write("    <cursos>" + a.getCursos() + "</cursos>\n");
+                writer.write("    <horas>" + a.getHoras() + "</horas>\n");
+                writer.write("    <profe_imparte>" + a.getProfesor() + "</profe_imparte>\n");
+                writer.write("  </asignatura>\n");
+            }
+
+            writer.write("</asignaturas>\n");
+            System.out.println("Archivo XML guardado correctamente en: " + rutaAsignaturasXml);
 
         } catch (IOException e) {
             System.out.println("Error guardar");

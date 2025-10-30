@@ -2,11 +2,11 @@ import java.util.ArrayList;
 
 public class Asignaturas {
     private String nombreAsignatura;
-    private ArrayList<String> cursos;
+    private String cursos;
     private int horas;
     private String profesor;
 
-    public Asignaturas(String nombreAsignatura, ArrayList<String> cursos, int horas, String profesor) {
+    public Asignaturas(String nombreAsignatura, String cursos, int horas, String profesor) {
         this.nombreAsignatura = nombreAsignatura;
         this.cursos = cursos;
         this.horas = horas;
@@ -21,11 +21,11 @@ public class Asignaturas {
         this.nombreAsignatura = nombreAsignatura;
     }
 
-    public ArrayList<String> getCursos() {
+    public String getCursos() {
         return cursos;
     }
 
-    public void setCursos(ArrayList<String> cursos) {
+    public void setCursos(String cursos) {
         this.cursos = cursos;
     }
 
