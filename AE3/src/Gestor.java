@@ -132,6 +132,7 @@ public class Gestor {
         } while (opcion != 0);
     }
 
+    //getTagValue
     private static String getTagValue(Element parent, String tagName) {
         NodeList nodes = parent.getElementsByTagName(tagName);
         return (nodes.getLength() > 0) ? nodes.item(0).getTextContent().trim() : "";
