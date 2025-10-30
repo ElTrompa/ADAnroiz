@@ -14,7 +14,7 @@ public class Alumno {
         this.fecha = fecha;
         this.correoPadres = correoPadres;
         this.nombrePadre = nombrePadre;
-        this.nombreMadre = nombreMadre;
+        this.nombreMadre = this.nombreMadre;
     }
 
     public String getAlumno() {

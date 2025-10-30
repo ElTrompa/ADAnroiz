@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Gestor {
     Scanner teclado = new Scanner(System.in);
 
-    private String rutaAlumnoXml = "alumnos.xml";
+    private static String rutaAlumnoXml = "alumnos.xml";
     private String rutaAsignaturasXml = "asignaturas.xml";
     private static String rutaAusenciasXml = "ausencias.xml";
 
@@ -35,9 +35,36 @@ public class Gestor {
             opcion = Integer.parseInt(teclado.next());
 
             if (opcion == 1) {//leer alumnos
+                ArrayList<Alumno> leidos = leerAlumnosXML();
 
+                System.out.println("\nAlumnos leidos desde el XML:");
+                for (Alumno a : leidos) {
+                    System.out.println(a);
+                }
             } else if (opcion == 2) {//agregar alumnos
+                System.out.println("Dime el nombre:");
+                String nombre = teclado.next();
+                System.out.println("Dime el curso:");
+                String curso = teclado.next();
+                System.out.println("Dime el dni:");
+                int DNI = teclado.nextInt();
+                System.out.println("Dime la fecha de nacimiento:");
+                String fecha_nacimiento = teclado.next();
+                System.out.println("Dime el correo de los padres:");
+                String correo_padres = teclado.next();
+                System.out.println("Dime el nombre del padre:");
+                String nombre_padre = teclado.next();
+                System.out.println("Dime el nombre de la madre:");
+                String nombre_madre = teclado.next();
 
+                Alumno nuevo = new Alumno(nombre, curso, DNI, fecha_nacimiento, correo_padres, nombre_padre, nombre_madre);
+
+                ArrayList<Alumno> lista = new ArrayList<>();
+                lista.add(nuevo);
+
+                guardarAlumnosXML(lista);
+
+                System.out.println("Nueva ausencia creada y guardada en ausencias.xml");
             }else if (opcion == 3) {//leer asignaturas
 
             }else if (opcion == 4) {//crear asignaturas
@@ -53,7 +80,7 @@ public class Gestor {
                 String asignatura = teclado.next();
                 System.out.println("Dime el nombre del alumno:");
                 String nombreAlumno = teclado.next();
-                System.out.println("Dime si esta justificada:");
+                System.out.println("Dime si esta justificada: (true/false)");
                 Boolean justificada = teclado.nextBoolean();
                 System.out.println("Dime el curso:");
                 String curso = teclado.next();
@@ -88,6 +115,7 @@ public class Gestor {
         return (nodes.getLength() > 0) ? nodes.item(0).getTextContent().trim() : "";
     }
 
+    //Ausencias
     public static ArrayList<Ausencias> leerAusenciasXML () {
         ArrayList<Ausencias> lista = new ArrayList<>();
 
@@ -144,5 +172,63 @@ public class Gestor {
             System.out.println("Error guardar");
         }
         }
+
+    //Alumnos
+    public static ArrayList<Alumno> leerAlumnosXML () {
+        ArrayList<Alumno> lista = new ArrayList<>();
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new File(rutaAlumnoXml));
+            doc.getDocumentElement().normalize();
+
+            NodeList nodos = doc.getElementsByTagName("alumno");
+
+            for (int i = 0; i < nodos.getLength(); i++) {
+                Element e = (Element) nodos.item(i);
+
+                Alumno a = new Alumno(
+                        getTagValue(e, "nombre"),
+                        getTagValue(e, "curso"),
+                        Integer.parseInt(getTagValue(e, "DNI")),
+                        getTagValue(e, "fecha_nacimiento"),
+                        getTagValue(e, "correo_padres"),
+                        getTagValue(e, "nombre_padre"),
+                        getTagValue(e, "nombre_madre")
+                );
+
+                lista.add(a);
+            }
+        }catch (Exception e) {
+            System.err.println("Error leer");
+        }
+
+        return lista;
+    }
+
+    public static void guardarAlumnosXML (ArrayList<Alumno> lista) {
+        try (FileWriter writer = new FileWriter(rutaAlumnoXml)) {
+            writer.write("<alumnos>\n");
+
+            for (Alumno a : lista) {
+                writer.write("  <alumno>\n");
+                writer.write("    <nombre>" + a.getAlumno() + "</nombre>\n");
+                writer.write("    <curso>" + a.getCurso() + "</curso>\n");
+                writer.write("    <DNI>" + a.getDni() + "</DNI>\n");
+                writer.write("    <fecha_nacimiento>" + a.getFecha() + "</fecha_nacimiento>\n");
+                writer.write("    <correo_padres>" + a.getCorreoPadres() + "</correo_padres>\n");
+                writer.write("    <nombre_padre>" + a.getNombrePadre() + "</nombre_padre>\n");
+                writer.write("    <nombre_madre>" + a.getNombreMadre() + "</nombre_madre>\n");
+                writer.write("  </alumno>\n");
+            }
+
+            writer.write("</alumnos>\n");
+            System.out.println("Archivo XML guardado correctamente en: " + rutaAlumnoXml);
+
+        } catch (IOException e) {
+            System.out.println("Error guardar");
+        }
+    }
     }
 
