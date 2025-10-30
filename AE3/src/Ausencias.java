@@ -1,26 +1,20 @@
-import java.sql.Timestamp;
-
 public class Ausencias {
     private String fecha;
     private String horaInicio;
     private String horaFin;
     private String asignatura;
-    private String nombre;
-    private boolean justificado;
+    private String alumno;
+    private boolean justificada;
     private String curso;
 
-    public Ausencias(String fecha, String horaInicio, String horaFin, String asignatura, String nombre, boolean justificado, String curso) {
+    public Ausencias(String fecha, String horaInicio, String horaFin, String asignatura, String alumno, boolean justificada, String curso) {
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.asignatura = asignatura;
-        this.nombre = nombre;
-        this.justificado = justificado;
+        this.alumno = alumno;
+        this.justificada = justificada;
         this.curso = curso;
-    }
-
-    public Ausencias() {
-
     }
 
     public String getFecha() {
@@ -55,20 +49,20 @@ public class Ausencias {
         this.asignatura = asignatura;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getAlumno() {
+        return alumno;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setAlumno(String alumno) {
+        this.alumno = alumno;
     }
 
-    public boolean isJustificado() {
-        return justificado;
+    public boolean isJustificada() {
+        return justificada;
     }
 
-    public void setJustificado(boolean justificado) {
-        this.justificado = justificado;
+    public void setJustificada(boolean justificada) {
+        this.justificada = justificada;
     }
 
     public String getCurso() {
@@ -81,7 +75,6 @@ public class Ausencias {
 
     @Override
     public String toString() {
-        return "Ausencia de " + nombre + " en " + asignatura + " (" + curso + ") el " + fecha + horaInicio + horaFin +
-                " | Justificada: " + justificado;
+        return "Ausencias " + fecha + " " + horaInicio  + " " + horaFin + " " + asignatura + " " + alumno + " " + justificada + " " + curso + " ";
     }
 }
