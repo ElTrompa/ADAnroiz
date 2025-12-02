@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>AE4</artifactId>
+  <artifactId>ControlHibernate</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>AE4</name>
 
@@ -19,7 +19,7 @@
       <artifactId>javafx-controls</artifactId>
       <version>17.0.6</version>
     </dependency>
-    
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
@@ -50,7 +50,6 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>8.0.33</version>
     </dependency>
-
   </dependencies>
 
   <build>
