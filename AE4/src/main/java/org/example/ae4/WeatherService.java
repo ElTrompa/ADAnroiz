@@ -11,16 +11,12 @@ import java.time.Duration;
 import java.util.Locale;
 
 public class WeatherService {
-    // API gratuita de Open-Meteo (no requiere API key)
     private static final String API_URL = "https://api.open-meteo.com/v1/forecast";
 
-    // Coordenadas por defecto (Alzira, Valencia, España)
     private static final double DEFAULT_LATITUDE = 39.158937;
     private static final double DEFAULT_LONGITUDE = -0.355537;
 
-    private static final HttpClient httpClient = HttpClient.newBuilder()
-            .connectTimeout(Duration.ofSeconds(10))
-            .build();
+    private static final HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 
     public static class WeatherData {
         private double temperature;
@@ -46,16 +42,11 @@ public class WeatherService {
 
     public static WeatherData getCurrentWeather(double latitude, double longitude) {
         try {
-            String url = String.format(Locale.US, "%s?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code&timezone=auto",
-                    API_URL, latitude, longitude);
+            String url = String.format(Locale.US, "%s?latitude=%.4f&longitude=%.4f&current=temperature_2m,weather_code&timezone=auto", API_URL, latitude, longitude);
 
             System.out.println("Consultando clima: " + url);
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .timeout(Duration.ofSeconds(10))
-                    .GET()
-                    .build();
+            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).timeout(Duration.ofSeconds(10)).GET().build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             String jsonResponse = response.body();
@@ -77,7 +68,6 @@ public class WeatherService {
             e.printStackTrace();
         }
 
-        // Valores por defecto si falla la API
         return new WeatherData(20.0, "No disponible");
     }
 
