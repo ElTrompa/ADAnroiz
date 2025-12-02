@@ -6,16 +6,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.ae4.MenuController">
    <children>
       <VBox alignment="TOP_CENTER" spacing="30.0" prefHeight="400.0" prefWidth="600.0" style="-fx-padding: 40;">
          <Label text="Control Fichajes" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
          
          <VBox alignment="CENTER" spacing="15.0" style="-fx-padding: 20;">
-            <Button id="ficharButton" text="Fichar" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
-            <Button text="Gestion de Fichajes" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
-            <Button id="estadisticasButton" text="Estadisticas" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
-            <Button id="salirButton" text="Salir" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
+            <Button fx:id="ficharButton" text="Fichar" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
+            <Button fx:id="gestionButton"  text="Gestion de Fichajes" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #27ae60; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
+            <Button fx:id="estadisticasButton" text="Estadisticas" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
+            <Button fx:id="salirButton" text="Salir" style="-fx-font-size: 13; -fx-padding: 12 30; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" prefWidth="200.0" />
          </VBox>
       </VBox>
    </children>

@@ -30,21 +30,21 @@
                 <Label text="Fecha Desde:" style="-fx-text-fill: #34495e; -fx-font-size: 11;">
                     <font><Font size="12" /></font>
                 </Label>
-                <DatePicker id="fechaDesdeDataPicker" fx:id="dateDesde" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="150" />
+                <DatePicker fx:id="fechaDesdeDataPicker" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="150" />
             </VBox>
 
             <VBox spacing="5" style="-fx-border-color: #ecf0f1; -fx-border-radius: 4; -fx-padding: 8;">
                 <Label text="Fecha Hasta:" style="-fx-text-fill: #34495e; -fx-font-size: 11;">
                     <font><Font size="12" /></font>
                 </Label>
-                <DatePicker id="fechaHastaDataPicker" fx:id="dateHasta" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="150" />
+                <DatePicker fx:id="fechaHastaDataPicker" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="150" />
             </VBox>
 
             <VBox spacing="5" style="-fx-border-color: #ecf0f1; -fx-border-radius: 4; -fx-padding: 8;">
                 <Label text="Trabajador:" style="-fx-text-fill: #34495e; -fx-font-size: 11;">
                     <font><Font size="12" /></font>
                 </Label>
-                <ComboBox id="trabajadorComboBox" fx:id="comboTrabajador" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="200" />
+                <ComboBox fx:id="trabajadorComboBox" style="-fx-font-size: 11; -fx-padding: 6;" prefWidth="200" />
             </VBox>
 
             <VBox spacing="5">
@@ -54,8 +54,8 @@
                 <HBox spacing="10">
                 </HBox>
             </VBox>
-         <Button id="buscarButton" text="Buscar" style="-fx-font-size: 12; -fx-padding: 8 15; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" />
-         <Button id="limpiarButton" text="Limpiar" style="-fx-font-size: 12; -fx-padding: 8 15; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" />
+         <Button fx:id="buscarButton" text="Buscar" style="-fx-font-size: 12; -fx-padding: 8 15; -fx-background-color: #3498db; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" />
+         <Button fx:id="limpiarButton" text="Limpiar" style="-fx-font-size: 12; -fx-padding: 8 15; -fx-background-color: #95a5a6; -fx-text-fill: white; -fx-border-radius: 4; -fx-cursor: hand;" />
         </HBox>
     </VBox>
 
@@ -63,23 +63,23 @@
 
     <TableView fx:id="tableFichajes" style="-fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-padding: 10;" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn id="fechaTableColum" fx:id="colFecha" prefWidth="100" text="Fecha" />
-            <TableColumn id="nombreTableColum" fx:id="colTrabajador" prefWidth="180" text="Trabajador" />
-            <TableColumn id="entradaTableColum" fx:id="colEntrada" prefWidth="110" text="Entrada" />
-            <TableColumn id="salidaTableColum" fx:id="colSalida" prefWidth="110" text="Salida" />
-            <TableColumn id="climaTableColum" fx:id="colClima" prefWidth="120" text="Clima" />
-            <TableColumn id="temperaturaTableColum" fx:id="colTemperatura" prefWidth="100" text="Temperatura" />
-            <TableColumn id="horasJornadaTableColum" fx:id="colHorasTrabajadas" prefWidth="100" text="Horas Jornada" />
+            <TableColumn fx:id="fechaTableColum" prefWidth="100" text="Fecha" />
+            <TableColumn fx:id="nombreTableColum" prefWidth="180" text="Trabajador" />
+            <TableColumn fx:id="entradaTableColum" prefWidth="110" text="Entrada" />
+            <TableColumn fx:id="salidaTableColum" prefWidth="110" text="Salida" />
+            <TableColumn fx:id="climaTableColum" prefWidth="120" text="Clima" />
+            <TableColumn fx:id="temperaturaTableColum" prefWidth="100" text="Temperatura" />
+            <TableColumn fx:id="horasJornadaTableColum" prefWidth="100" text="Horas Jornada" />
         </columns>
     </TableView>
 
     <HBox spacing="30" style="-fx-background-color: white; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-width: 1; -fx-border-radius: 4;">
-        <Label id="totalRegistrosLabel" fx:id="lblTotalRegistros" style="-fx-text-fill: #2c3e50; -fx-font-size: 12;" text="Total de registros: 0">
+        <Label fx:id="totalRegistrosLabel" style="-fx-text-fill: #2c3e50; -fx-font-size: 12;" text="Total de registros: 0">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
         </Label>
-        <Label id="totalHorasLabel" fx:id="lblTotalHoras" style="-fx-text-fill: #27ae60; -fx-font-size: 12;" text="Total horas trabajadas: 00:00">
+        <Label fx:id="totalHorasLabel" style="-fx-text-fill: #27ae60; -fx-font-size: 12;" text="Total horas trabajadas: 00:00">
             <font>
                 <Font name="System Bold" size="13" />
             </font>
