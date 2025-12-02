@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox spacing="15" style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.ae4.ListarFichajesController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label style="-fx-text-fill: #2c3e50;" text="Listar Fichajes">
+        <font>
+            <Font name="System Bold" size="20" />
+        </font>
+    </Label>
+
+    <Separator />
+
+    <VBox spacing="10">
+        <Label style="-fx-text-fill: #34495e;" text="Filtros de Busqueda">
+            <font>
+                <Font name="System Bold" size="14" />
+            </font>
+        </Label>
+
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <VBox spacing="5">
+                <Label text="Fecha Desde:">
+                    <font><Font size="12" /></font>
+                </Label>
+                <DatePicker id="fechaDesdeDataPicker" fx:id="dateDesde" prefWidth="150" />
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text="Fecha Hasta:">
+                    <font><Font size="12" /></font>
+                </Label>
+                <DatePicker id="fechaHastaDataPicker" fx:id="dateHasta" prefWidth="150" />
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text="Trabajador:">
+                    <font><Font size="12" /></font>
+                </Label>
+                <ComboBox id="trabajadorComboBox" fx:id="comboTrabajador" prefWidth="200" />
+            </VBox>
+
+            <VBox spacing="5">
+                <Label text=" ">
+                    <font><Font size="12" /></font>
+                </Label>
+                <HBox spacing="10">
+                </HBox>
+            </VBox>
+         <Button id="buscarButton" mnemonicParsing="false" text="Buscar" />
+         <Button id="limpiarButton" mnemonicParsing="false" text="Limpiar" />
+        </HBox>
+    </VBox>
+
+    <Separator />
+
+    <TableView fx:id="tableFichajes" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn id="fechaTableColum" fx:id="colFecha" prefWidth="100" text="Fecha" />
+            <TableColumn id="nombreTableColum" fx:id="colTrabajador" prefWidth="180" text="Trabajador" />
+            <TableColumn id="entradaTableColum" fx:id="colEntrada" prefWidth="110" text="Entrada" />
+            <TableColumn id="salidaTableColum" fx:id="colSalida" prefWidth="110" text="Salida" />
+            <TableColumn id="climaTableColum" fx:id="colClima" prefWidth="120" text="Clima" />
+            <TableColumn id="temperaturaTableColum" fx:id="colTemperatura" prefWidth="100" text="Temperatura" />
+            <TableColumn id="horasJornadaTableColum" fx:id="colHorasTrabajadas" prefWidth="100" text="Horas Jornada" />
+        </columns>
+    </TableView>
+
+    <HBox spacing="30" style="-fx-background-color: white; -fx-padding: 15; -fx-border-color: #bdc3c7; -fx-border-width: 1;">
+        <Label id="totalRegistrosLabel" fx:id="lblTotalRegistros" style="-fx-text-fill: #2c3e50;" text="Total de registros: 0">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Label>
+        <Label id="totalHorasLabel" fx:id="lblTotalHoras" style="-fx-text-fill: #27ae60;" text="Total horas trabajadas: 00:00">
+            <font>
+                <Font name="System Bold" size="13" />
+            </font>
+        </Label>
+    </HBox>
+</VBox>

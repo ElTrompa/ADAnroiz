@@ -4,16 +4,18 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.layout.Pane?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Button layoutX="477.0" layoutY="311.0" mnemonicParsing="false" text="Crear Fichaje" />
-      <CheckBox layoutX="144.0" layoutY="244.0" mnemonicParsing="false" text="Entrada" />
-      <CheckBox layoutX="214.0" layoutY="244.0" mnemonicParsing="false" text="Salida" />
-      <Label layoutX="144.0" layoutY="219.0" text="Tipo de Fichaje" />
-      <ComboBox layoutX="139.0" layoutY="159.0" prefWidth="150.0" />
-      <Label layoutX="144.0" layoutY="131.0" text="Busca tu nombre" />
+      <Button id="crearFichajeButton" layoutX="477.0" layoutY="311.0" mnemonicParsing="false" text="Crear Fichaje" />
+      <CheckBox id="entradaCheckBox" layoutX="144.0" layoutY="244.0" mnemonicParsing="false" text="Entrada" />
+      <CheckBox id="salidaCheckBox" layoutX="214.0" layoutY="244.0" mnemonicParsing="false" text="Salida" />
+      <Label layoutX="144.0" layoutY="211.0" prefHeight="25.0" prefWidth="117.0" text="Tipo de Fichaje" />
+      <ComboBox id="buscarNombreComboBox" layoutX="132.0" layoutY="103.0" prefWidth="150.0" />
+      <Label layoutX="137.0" layoutY="75.0" text="Busca tu nombre" />
+      <Label layoutX="137.0" layoutY="136.0" text="Contraseña" />
+      <PasswordField id="passwordField" layoutX="128.0" layoutY="160.0" />
    </children>
 </Pane>

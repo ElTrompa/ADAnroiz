@@ -3,6 +3,7 @@ CREATE TABLE trabajador (
   nombre VARCHAR(100) NOT NULL,
   apellidos VARCHAR(150) NOT NULL,
   puesto VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL,      -- contraseña del trabajador
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -10,9 +11,9 @@ CREATE TABLE fichaje (
   id BIGINT AUTO_INCREMENT PRIMARY KEY,
   id_trabajador BIGINT NOT NULL,
   hora DATETIME NOT NULL,
-  tipo ENUM('E','S') NOT NULL,     -- Entrada / Salida
-  clima VARCHAR(50),               -- Ej: despejado, nublado, soleado...
-  temperatura DECIMAL(5,2),        -- Ej: 22.50 ºC
+  tipo ENUM('E','S') NOT NULL,         -- Entrada / Salida
+  clima VARCHAR(50),                   -- Ej: despejado, nublado, soleado...
+  temperatura DECIMAL(5,2),            -- Ej: 22.50 ºC
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (id_trabajador) REFERENCES trabajador(id) ON DELETE CASCADE
 );
@@ -20,10 +21,10 @@ CREATE TABLE fichaje (
 CREATE INDEX idx_fichaje_trabajador_hora 
 ON fichaje(id_trabajador, hora);
 
-INSERT INTO trabajador (nombre, apellidos, puesto)
+INSERT INTO trabajador (nombre, apellidos, puesto, password)
 VALUES 
-('Maria', 'Lopez Garcia', 'Administración'),
-('Juan', 'Perez Soto', 'Operario');
+('Maria', 'Lopez Garcia', 'Administración', '1234'),
+('Juan', 'Perez Soto', 'Operario', 'abcd1234');
 
 INSERT INTO fichaje (id_trabajador, hora, tipo, clima, temperatura)
 VALUES
