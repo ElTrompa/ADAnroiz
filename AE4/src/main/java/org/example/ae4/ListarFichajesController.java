@@ -2,6 +2,7 @@ package org.example.ae4;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 public class ListarFichajesController {
     @FXML
@@ -51,4 +52,18 @@ public class ListarFichajesController {
 
     @FXML
     private Label totalHorasLabel;
+
+    @FXML
+    private void initialize() {
+        HibernateUtil.getSessionFactory();
+    }
+
+    @FXML
+    private void setSalirButton() {
+        HibernateUtil.shutdownDatabase();
+        Stage stage = (Stage) salirButton.getScene().getWindow();
+        stage.close();
+    }
+
+
 }

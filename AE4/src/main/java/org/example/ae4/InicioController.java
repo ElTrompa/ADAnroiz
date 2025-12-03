@@ -14,6 +14,11 @@ public class InicioController {
     private Button iniciarButton;
 
     @FXML
+    private void initialize() {
+        HibernateUtil.getSessionFactory();
+    }
+
+    @FXML
     private void iniciarButton() {
         InicioController.openWindow("menu.fxml", "menu");
     }

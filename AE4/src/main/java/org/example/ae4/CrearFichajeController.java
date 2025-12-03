@@ -21,4 +21,9 @@ public class CrearFichajeController {
 
     @FXML
     private Button crearFichajeButton;
+
+    @FXML
+    private void initialize() {
+        HibernateUtil.getSessionFactory();
+    }
 }
