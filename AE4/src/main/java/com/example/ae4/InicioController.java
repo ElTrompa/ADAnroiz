@@ -18,6 +18,7 @@ public class InicioController {
 
     @FXML
     private void onInicioButonClick() {
+        HibernateUtil.getSessionFactory();
         cambioPagina("menu.fxml", "Menu Principal");
     }
 
