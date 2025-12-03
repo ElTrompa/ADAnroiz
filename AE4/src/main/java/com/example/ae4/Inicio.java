@@ -19,6 +19,5 @@ public class Inicio extends Application {
 
     public static void main(String[] args) {
         launch(Inicio.class, args);
-
     }
 }
