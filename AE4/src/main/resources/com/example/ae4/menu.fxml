@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.ae4.MenuController"
-            prefHeight="400.0" prefWidth="600.0">
 
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="537.0" prefWidth="728.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ae4.MenuController">
+   <children>
+      <Button fx:id="ficharButton" layoutX="297.0" layoutY="219.0" mnemonicParsing="false" onAction="#onFicharButtonClick" prefHeight="30.0" prefWidth="131.0" text="Fichar">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="buscarEmpleadoButton" layoutX="297.0" layoutY="269.0" mnemonicParsing="false" onAction="#onBuscarEmpleadoButtonClick" text="Buscar Empleado">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="estadisticasButton" layoutX="297.0" layoutY="313.0" mnemonicParsing="false" onAction="#onEstadisticasButtonClick" prefHeight="30.0" prefWidth="131.0" text="Estadisticas">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="salirButton" layoutX="297.0" layoutY="354.0" mnemonicParsing="false" onAction="#onSalirButtonClick" prefHeight="30.0" prefWidth="131.0" text="Salir">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
