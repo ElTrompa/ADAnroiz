@@ -25,17 +25,17 @@ public class MenuController {
 
     @FXML
     private void setFicharButton() {
-        InicioController.openWindow("Crearfichaje.fxml", "fichar");
+        HelloApplication.openWindow("Crearfichaje.fxml", "fichar");
     }
 
     @FXML
     private void setGestionButton() {
-        InicioController.openWindow("listarFichajes.fxml", "gestion");
+        HelloApplication.openWindow("listarFichajes.fxml", "gestion");
     }
 
     @FXML
     private void setEstadisticasButton() {
-        InicioController.openWindow("listarFichajes.fxml", "PorPersona");
+        HelloApplication.openWindow("listarFichajes.fxml", "PorPersona");
     }
 
     @FXML
