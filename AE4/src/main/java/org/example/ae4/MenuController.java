@@ -2,6 +2,7 @@ package org.example.ae4;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.stage.Stage;
 import java.awt.*;
 
 public class MenuController {
@@ -16,4 +17,31 @@ public class MenuController {
 
     @FXML
     private Button salirButton;
+
+    @FXML
+    private void initialize() {
+        HibernateUtil.getSessionFactory();
+    }
+
+    @FXML
+    private void setFicharButton() {
+        InicioController.openWindow("Crearfichaje.fxml", "fichar");
+    }
+
+    @FXML
+    private void setGestionButton() {
+        InicioController.openWindow("listarFichajes.fxml", "gestion");
+    }
+
+    @FXML
+    private void setEstadisticasButton() {
+        InicioController.openWindow("listarFichajes.fxml", "PorPersona");
+    }
+
+    @FXML
+    private void setSalirButton() {
+        HibernateUtil.shutdownDatabase();
+        Stage stage = (Stage) salirButton.getScene().getWindow();
+        stage.close();
+    }
 }

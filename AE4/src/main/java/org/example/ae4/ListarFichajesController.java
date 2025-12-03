@@ -5,6 +5,9 @@ import javafx.scene.control.*;
 
 public class ListarFichajesController {
     @FXML
+    private Button salirButton;
+
+    @FXML
     private DatePicker fechaDesdeDataPicker;
 
     @FXML
