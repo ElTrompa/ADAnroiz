@@ -5,6 +5,7 @@ module com.example.ae4 {
     requires org.hibernate.orm.core;
     requires jakarta.persistence;
     requires java.naming;
+    requires javafx.graphics;
 
     opens com.example.ae4 to javafx.fxml, org.hibernate.orm.core;
     exports com.example.ae4;
