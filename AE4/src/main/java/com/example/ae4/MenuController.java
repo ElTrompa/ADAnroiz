@@ -32,6 +32,7 @@ public class MenuController {
         cambioPagina("buscarEmpleado.fxml", "Buscar Empleado");
     }
 
+
     @FXML
     private void onEstadisticasButtonClick(ActionEvent actionEvent) {
         cambioPagina("estadisticas.fxml", "Estadísticas");
