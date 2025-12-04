@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/colegio</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/fichajes</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">RootPass123!</property>
 
@@ -16,6 +16,6 @@
 
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <mapping class="org.example.Usuario"/>
+        <mapping class="com.example.ae4.Trabajador"/>
     </session-factory>
 </hibernate-configuration>
