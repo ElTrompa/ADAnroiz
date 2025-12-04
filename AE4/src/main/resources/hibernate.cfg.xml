@@ -17,5 +17,7 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="com.example.ae4.Trabajador"/>
+        <mapping class="com.example.ae4.Clima"/>
+        <mapping class="com.example.ae4.Fichaje"/>
     </session-factory>
 </hibernate-configuration>
