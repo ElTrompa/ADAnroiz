@@ -1,12 +1,17 @@
-module com.example.ae4 {
+module org.example.fichajes {
     requires javafx.controls;
     requires javafx.fxml;
-
-    requires org.hibernate.orm.core;
+    requires java.sql;
+    requires java.net.http;
     requires jakarta.persistence;
+    requires org.hibernate.orm.core;
     requires java.naming;
-    requires javafx.graphics;
+    requires com.google.gson;
 
-    opens com.example.ae4 to javafx.fxml, org.hibernate.orm.core;
-    exports com.example.ae4;
+    opens org.example.fichajes to javafx.fxml;
+    opens org.example.fichajes.model to org.hibernate.orm.core;
+    exports org.example.fichajes;
+    exports org.example.fichajes.model;
+    exports org.example.fichajes.dao;
+    exports org.example.fichajes.util;
 }
