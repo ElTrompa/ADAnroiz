@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox spacing="15" style="-fx-background-color: #ecf0f1;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.fichajes.FicharController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label style="-fx-text-fill: #2c3e50;" text="Registrar Fichaje">
+        <font>
+            <Font name="System Bold" size="20" />
+        </font>
+    </Label>
+
+    <Separator />
+
+    <GridPane hgap="10" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" prefWidth="120" />
+            <ColumnConstraints minWidth="300" prefWidth="300" />
+        </columnConstraints>
+
+        <!-- Trabajador -->
+        <Label text="Trabajador:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <font><Font size="13" /></font>
+        </Label>
+        <ComboBox fx:id="comboTrabajador" prefWidth="300" promptText="Seleccione un trabajador" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <!-- Contraseña -->
+        <Label text="Contraseña:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <font><Font size="13" /></font>
+        </Label>
+        <PasswordField fx:id="txtPassword" prefWidth="300" promptText="Introduzca su contraseña" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <!-- Fecha -->
+        <Label text="Fecha:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <font><Font size="13" /></font>
+        </Label>
+        <DatePicker fx:id="dateFecha" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <!-- Hora -->
+        <Label text="Hora:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <font><Font size="13" /></font>
+        </Label>
+        <HBox alignment="CENTER_LEFT" spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <TextField fx:id="txtHora" prefWidth="60" promptText="HH" />
+            <Label text=":">
+                <font><Font size="16" /></font>
+            </Label>
+            <TextField fx:id="txtMinuto" prefWidth="60" promptText="MM" />
+        </HBox>
+
+        <!-- Tipo de Fichaje -->
+        <Label text="Tipo:" GridPane.columnIndex="0" GridPane.rowIndex="4">
+            <font><Font size="13" /></font>
+        </Label>
+        <HBox spacing="30" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <RadioButton fx:id="radioEntrada" selected="true" text="Entrada">
+                <toggleGroup>
+                    <ToggleGroup fx:id="tipoFichaje" />
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="radioSalida" text="Salida" toggleGroup="$tipoFichaje" />
+        </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <Separator />
+
+    <Label style="-fx-text-fill: #34495e;" text="Informacion Meteorologica">
+        <font>
+            <Font name="System Bold" size="14" />
+        </font>
+    </Label>
+
+    <GridPane hgap="10" vgap="15">
+        <columnConstraints>
+            <ColumnConstraints minWidth="120" prefWidth="120" />
+            <ColumnConstraints minWidth="300" prefWidth="300" />
+        </columnConstraints>
+
+        <!-- Temperatura -->
+        <Label text="Temperatura (C):" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <font><Font size="13" /></font>
+        </Label>
+        <TextField fx:id="txtTemperatura" promptText="Ej: 20.5" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+        <!-- Clima -->
+        <Label text="Clima:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <font><Font size="13" /></font>
+        </Label>
+        <TextField fx:id="txtClima" promptText="Ej: Soleado, Nublado" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+        <!-- Boton obtener clima -->
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="btnObtenerClima" onAction="#onObtenerClimaClick" style="-fx-background-color: #3498db; -fx-text-fill: white;" text="Obtener Clima Actual" />
+        </HBox>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+    </GridPane>
+
+    <Separator />
+
+    <!-- Observaciones -->
+    <Label text="Observaciones (opcional):">
+        <font><Font size="13" /></font>
+    </Label>
+    <TextArea fx:id="txtObservaciones" prefHeight="80" promptText="Anada cualquier observacion adicional..." />
+
+    <Separator />
+
+    <!-- Boton Fichar -->
+    <HBox alignment="CENTER" spacing="10">
+        <Button fx:id="btnFichar" onAction="#onFicharClick" prefHeight="40" prefWidth="250" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-cursor: hand;" text="REGISTRAR FICHAJE" />
+    </HBox>
+
+    <!-- Status -->
+    <Label fx:id="lblStatus" style="-fx-font-size: 12px;" text="">
+        <padding>
+            <Insets top="10" />
+        </padding>
+    </Label>
+</VBox>
