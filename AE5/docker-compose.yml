@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  odoo:
+    image: odoo:17.0
+    container_name: ae5-odoo
+    environment:
+      - DB_HOST=ae5-postgres
+      - DB_PORT=5432
+      - DB_USER=odoo
+      - DB_PASSWORD=odoo_password
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo_addons:/mnt/extra-addons
+      - odoo_data:/var/lib/odoo
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ae5-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8069"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  postgres:
+    image: postgres:15
+    container_name: ae5-postgres
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo_password
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ae5-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:7.0
+    container_name: ae5-mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin_password
+      MONGO_INITDB_DATABASE: ae5_warranty_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/init-mongodb.js:/docker-entrypoint-initdb.d/init.js:ro
+    networks:
+      - ae5-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/ae5_warranty_db -u admin -p admin_password --authenticationDatabase admin --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+  odoo_data:
+    driver: local
+  odoo_addons:
+    driver: local
+  mongodb_data:
+    driver: local
+
+networks:
+  ae5-network:
+    driver: bridge
