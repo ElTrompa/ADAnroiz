@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.garantias.controller.ControladorLogin">
+    <children>
+        <Label text="Sistema de Gestión de Garantías - Ciclismo" />
+        <TextField fx:id="tfUsuario" promptText="Usuario (Odoo)" />
+        <PasswordField fx:id="pfContrasena" promptText="Contraseña" />
+        <TextField fx:id="tfDb" promptText="Database (ej: garantias)" />
+        <Button fx:id="btnIniciar" text="Iniciar Sesión" onAction="#onIniciarSesion" />
+    </children>
+</VBox>

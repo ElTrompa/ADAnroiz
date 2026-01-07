@@ -313,12 +313,19 @@ Instrucciones rápidas:
 docker-compose down ; docker-compose up -d
 ```
 
-2. **Odoo** estará disponible en `http://localhost:8069` (la primera vez hará la instalación guiada). Para crear la base llamada `garantias` rellena el formulario con:
-   - Master Password: `admin`
-   - Database Name: `garantias`
-   - Email: `admin@example.com`
-   - Password: `admin`
-   - Marca **Demo Data** si quieres datos de ejemplo (recomendado para pruebas)
+2. **Odoo** estará disponible en `http://localhost:8069` (la primera vez hará la instalación guiada). Para crear la base llamada `garantias` puedes:
+   - Bien: rellenar el formulario en la UI (Master Password: `admin`, Database Name: `garantias`, Email: `admin@example.com`, Password: `admin`, marca **Demo Data** si quieres datos de ejemplo).
+   - O bien: usar el script incluido para crear la BD automáticamente desde el host:
+
+     Linux/macOS:
+     ```bash
+     ./scripts/create_odoo_db.sh http://localhost:8069 admin garantias admin@example.com admin true es_ES
+     ```
+
+     Windows PowerShell:
+     ```powershell
+     ./scripts/create_odoo_db.ps1 -url http://localhost:8069 -master admin -db garantias -adminEmail admin@example.com -adminPass admin -demo $true -lang es_ES
+     ```
 
 3. **Postgres** escucha en `localhost:5432` (usuario `odoo` / `odoo_password`).
 4. **MongoDB** en `mongodb://admin:admin_password@localhost:27017` y **Mongo Express** en `http://localhost:8081`.

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.garantias.controller.ControladorPrincipal">
+    <top>
+        <ToolBar>
+            <Label text="Sistema de Garantías - Ciclismo" />
+        </ToolBar>
+    </top>
+    <center>
+        <TabPane>
+            <tabs>
+                <Tab text="Facturas">
+                    <content>
+                        <VBox spacing="8">
+                            <Button fx:id="btnActualizarFacturas" text="Actualizar Facturas" onAction="#onActualizarFacturas" />
+                            <TableView fx:id="tablaFacturas" prefHeight="300.0">
+                                <columns>
+                                    <TableColumn fx:id="colFacturaNumero" text="Número" prefWidth="150" />
+                                    <TableColumn fx:id="colFacturaCliente" text="Cliente" prefWidth="250" />
+                                    <TableColumn fx:id="colFacturaFecha" text="Fecha" prefWidth="120" />
+                                    <TableColumn fx:id="colFacturaTotal" text="Total" prefWidth="120" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab text="Garantías">
+                    <content>
+                        <VBox spacing="8">
+                            <HBox spacing="8">
+                                <TextField fx:id="tfBuscarGarantia" promptText="Buscar..." />
+                                <ChoiceBox fx:id="cbEstado" />
+                                <Button text="Actualizar" onAction="#onActualizarGarantias" />
+                            </HBox>
+                            <TableView fx:id="tablaGarantias" prefHeight="300.0">
+                                <columns>
+                                    <TableColumn fx:id="colGarantiaProducto" text="Producto" prefWidth="200" />
+                                    <TableColumn fx:id="colGarantiaCliente" text="Cliente" prefWidth="200" />
+                                    <TableColumn fx:id="colGarantiaInicio" text="Inicio" prefWidth="120" />
+                                    <TableColumn fx:id="colGarantiaFin" text="Fin" prefWidth="120" />
+                                    <TableColumn fx:id="colGarantiaEstado" text="Estado" prefWidth="120" />
+                                    <TableColumn fx:id="colGarantiaDias" text="Días" prefWidth="80" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </content>
+                </Tab>
+                <Tab text="Estadísticas">
+                    <content>
+                        <VBox spacing="10">
+                            <HBox spacing="20">
+                                <VBox>
+                                    <Label text="Total Ventas" />
+                                    <Label fx:id="lblTotalVentas" text="0 €" />
+                                </VBox>
+                                <VBox>
+                                    <Label text="Facturas" />
+                                    <Label fx:id="lblNumFacturas" text="0" />
+                                </VBox>
+                                <VBox>
+                                    <Label text="Garantías Activas" />
+                                    <Label fx:id="lblActivas" text="0" />
+                                </VBox>
+                                <VBox>
+                                    <Label text="Garantías Por Expirar" />
+                                    <Label fx:id="lblPorExpirar" text="0" />
+                                </VBox>
+                                <VBox>
+                                    <Label text="Garantías Expiradas" />
+                                    <Label fx:id="lblExpiradas" text="0" />
+                                </VBox>
+                            </HBox>
+                            <HBox spacing="20">
+                                <PieChart fx:id="pieEstados" prefWidth="300" prefHeight="250" />
+                                <BarChart fx:id="barVentas" prefWidth="400" prefHeight="250">
+                                    <xAxis>
+                                        <CategoryAxis />
+                                    </xAxis>
+                                    <yAxis>
+                                        <NumberAxis />
+                                    </yAxis>
+                                </BarChart>
+                            </HBox>
+                        </VBox>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </center>
+</BorderPane>
