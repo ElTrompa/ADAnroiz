@@ -2,19 +2,34 @@ package com.example.garantias.service;
 
 import com.example.garantias.model.Garantia;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class ServicioMongoDB {
     private final MongoClient client;
     private final MongoDatabase database;
     private final MongoCollection<Document> collection;
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new JsonSerializer<LocalDate>() {
+                @Override
+                public JsonElement serialize(LocalDate src, Type typeOfSrc, JsonSerializationContext context) {
+                    return new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                }
+            })
+            .create();
 
     public ServicioMongoDB(String uri, String dbName) {
         this.client = MongoClients.create(uri);

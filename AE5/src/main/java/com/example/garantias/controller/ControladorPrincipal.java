@@ -162,8 +162,10 @@ public class ControladorPrincipal {
         new Thread(() -> {
             try {
                 SesionOdoo s = SesionOdoo.getInstancia();
+                System.out.println("DEBUG: SesionOdoo url=" + s.getUrl() + " db=" + s.getBaseDatos() + " cookie=" + s.getCookieSession());
                 ServicioOdoo servicioOdoo = new ServicioOdoo(s.getUrl() == null ? "http://localhost:8069" : s.getUrl(), s.getBaseDatos() == null ? "odoo" : s.getBaseDatos());
                 List<com.example.garantias.model.Factura> facturas = servicioOdoo.obtenerFacturasVenta();
+                System.out.println("DEBUG: facturas obtenidas count=" + (facturas == null ? 0 : facturas.size()));
                 int mesesGarantia = 12;
                 for (com.example.garantias.model.Factura f : facturas) {
                     if (f.getLineas() != null) {

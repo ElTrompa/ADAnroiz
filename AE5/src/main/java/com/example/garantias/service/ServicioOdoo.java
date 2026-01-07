@@ -63,6 +63,11 @@ public class ServicioOdoo {
                 s.setBaseDatos(db);
                 s.setUsuarioId(this.uid);
                 s.setNombreUsuario(usuario);
+                // Capturar cookie de sesión para reutilizarla en futuras llamadas
+                response.headers().firstValue("Set-Cookie").ifPresent(c -> {
+                    String cookieVal = c.split(";", 2)[0];
+                    s.setCookieSession(cookieVal);
+                });
                 return true;
             }
         }
@@ -90,19 +95,63 @@ public class ServicioOdoo {
         body.put("id", System.currentTimeMillis());
 
         String json = gson.toJson(body);
-        HttpRequest request = HttpRequest.newBuilder(URI.create(url + "/web/dataset/call_kw/account.move/search_read"))
+        // Construir request y adjuntar cookie de sesión si existe
+        String cookie = SesionOdoo.getInstancia().getCookieSession();
+        HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(url + "/web/dataset/call_kw/account.move/search_read"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+                .POST(HttpRequest.BodyPublishers.ofString(json));
+        if (cookie != null) builder.header("Cookie", cookie);
+        HttpRequest request = builder.build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        // Debug: mostrar status y body para diagnosticar respuestas vacías
+        System.out.println("DEBUG: Odoo search_read status=" + response.statusCode() + " cookie=" + cookie + " body=" + response.body());
         Map<?, ?> resp = gson.fromJson(response.body(), Map.class);
         List<Factura> result = new ArrayList<>();
-        if (resp != null && resp.get("result") instanceof Map) {
-            Map<?, ?> r = (Map<?, ?>) resp.get("result");
-            Object records = r.get("records");
-            if (records instanceof List) {
-                List<?> recs = (List<?>) records;
+        if (resp != null) {
+            Object resObj = resp.get("result");
+            // Caso 1: result es un Map con 'records'
+            if (resObj instanceof Map) {
+                Map<?, ?> r = (Map<?, ?>) resObj;
+                Object records = r.get("records");
+                if (records instanceof List) {
+                    List<?> recs = (List<?>) records;
+                    for (Object o : recs) {
+                        if (o instanceof Map) {
+                            Map<?, ?> m = (Map<?, ?>) o;
+                            Factura f = new Factura();
+                            Double idD = (Double) m.get("id");
+                            if (idD != null) f.setId(idD.intValue());
+                            f.setNombre((String) m.get("name"));
+                            Object partner = m.get("partner_id");
+                            if (partner instanceof List) {
+                                List<?> p = (List<?>) partner;
+                                if (p.size() >= 2) f.setNombreCliente((String) p.get(1));
+                            }
+                            String date = (String) m.get("invoice_date");
+                            if (date != null) f.setFechaFactura(LocalDate.parse(date));
+                            Double total = (Double) m.get("amount_total");
+                            if (total != null) f.setMontoTotal(total);
+
+                            // obtener líneas
+                            List<LineaFactura> lineas = new ArrayList<>();
+                            Object lineIdsObj = m.get("invoice_line_ids");
+                            if (lineIdsObj instanceof List) {
+                                List<?> lineIds = (List<?>) lineIdsObj;
+                                if (!lineIds.isEmpty()) {
+                                    List<LineaFactura> loaded = leerLineasFactura(lineIds);
+                                    lineas.addAll(loaded);
+                                }
+                            }
+                            f.setLineas(lineas);
+                            result.add(f);
+                        }
+                    }
+                }
+            }
+            // Caso 2: result es directamente una List de registros (forma que vimos en los logs)
+            else if (resObj instanceof List) {
+                List<?> recs = (List<?>) resObj;
                 for (Object o : recs) {
                     if (o instanceof Map) {
                         Map<?, ?> m = (Map<?, ?>) o;
@@ -158,19 +207,52 @@ public class ServicioOdoo {
         body.put("id", System.currentTimeMillis());
 
         String json = gson.toJson(body);
-        HttpRequest request = HttpRequest.newBuilder(URI.create(url + "/web/dataset/call_kw/account.move.line/read"))
+        // Adjuntar cookie si hay sesión
+        String cookie = SesionOdoo.getInstancia().getCookieSession();
+        HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(url + "/web/dataset/call_kw/account.move.line/read"))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
+                .POST(HttpRequest.BodyPublishers.ofString(json));
+        if (cookie != null) builder.header("Cookie", cookie);
+        HttpRequest request = builder.build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        // Debug: mostrar status y body para diagnosticar respuestas de líneas
+        System.out.println("DEBUG: Odoo line read status=" + response.statusCode() + " cookie=" + cookie + " body=" + response.body());
         Map<?, ?> resp = gson.fromJson(response.body(), Map.class);
         List<LineaFactura> result = new ArrayList<>();
-        if (resp != null && resp.get("result") instanceof Map) {
-            Map<?, ?> r = (Map<?, ?>) resp.get("result");
-            Object records = r.get("records");
-            if (records instanceof List) {
-                for (Object o : (List<?>) records) {
+        if (resp != null) {
+            Object resObj = resp.get("result");
+            // Caso Map con 'records'
+            if (resObj instanceof Map) {
+                Map<?, ?> r = (Map<?, ?>) resObj;
+                Object records = r.get("records");
+                if (records instanceof List) {
+                    for (Object o : (List<?>) records) {
+                        if (o instanceof Map) {
+                            Map<?, ?> m = (Map<?, ?>) o;
+                            LineaFactura lf = new LineaFactura();
+                            Double idD = (Double) m.get("id");
+                            if (idD != null) lf.setId(idD.intValue());
+                            Object prod = m.get("product_id");
+                            if (prod instanceof List) {
+                                List<?> p = (List<?>) prod;
+                                if (!p.isEmpty()) {
+                                    Double pid = (Double) p.get(0);
+                                    lf.setProductoId(pid.intValue());
+                                    if (p.size() > 1) lf.setNombreProducto((String) p.get(1));
+                                }
+                            }
+                            Double qty = (Double) m.get("quantity");
+                            if (qty != null) lf.setCantidad(qty);
+                            lf.setNumeroSerie(null);
+                            result.add(lf);
+                        }
+                    }
+                }
+            }
+            // Caso resultado directo en forma de List
+            else if (resObj instanceof List) {
+                for (Object o : (List<?>) resObj) {
                     if (o instanceof Map) {
                         Map<?, ?> m = (Map<?, ?>) o;
                         LineaFactura lf = new LineaFactura();
@@ -208,10 +290,12 @@ public class ServicioOdoo {
             body.put("id", System.currentTimeMillis());
 
             String json = gson.toJson(body);
-            HttpRequest request = HttpRequest.newBuilder(URI.create(url + "/web/database/list"))
+            String cookie = SesionOdoo.getInstancia().getCookieSession();
+            HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(url + "/web/database/list"))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
+                    .POST(HttpRequest.BodyPublishers.ofString(json));
+            if (cookie != null) builder.header("Cookie", cookie);
+            HttpRequest request = builder.build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             Map<?, ?> resp = gson.fromJson(response.body(), Map.class);
@@ -245,10 +329,12 @@ public class ServicioOdoo {
             body.put("id", System.currentTimeMillis());
 
             String json = gson.toJson(body);
-            HttpRequest request = HttpRequest.newBuilder(URI.create(url + "/web/database/create"))
+            String cookie = SesionOdoo.getInstancia().getCookieSession();
+            HttpRequest.Builder builder = HttpRequest.newBuilder(URI.create(url + "/web/database/create"))
                     .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
+                    .POST(HttpRequest.BodyPublishers.ofString(json));
+            if (cookie != null) builder.header("Cookie", cookie);
+            HttpRequest request = builder.build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             Map<?, ?> resp = gson.fromJson(response.body(), Map.class);
