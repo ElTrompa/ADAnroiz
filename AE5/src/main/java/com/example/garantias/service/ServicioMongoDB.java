@@ -32,6 +32,11 @@ public class ServicioMongoDB {
         return found != null;
     }
 
+    public boolean eliminarGarantiaPorLinea(int lineaFacturaId) {
+        var res = collection.deleteOne(new Document("lineaFacturaId", lineaFacturaId));
+        return res.getDeletedCount() > 0;
+    }
+
     public void crearGarantiaDesdeLinea(int facturaId, String nombreFactura, com.example.garantias.model.LineaFactura linea, String nombreCliente, int mesesGarantia) {
         Garantia g = new Garantia();
         g.setFacturaId(facturaId);

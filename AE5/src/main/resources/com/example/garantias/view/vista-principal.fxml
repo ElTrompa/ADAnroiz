@@ -37,12 +37,14 @@
                             </HBox>
                             <TableView fx:id="tablaGarantias" prefHeight="300.0">
                                 <columns>
-                                    <TableColumn fx:id="colGarantiaProducto" text="Producto" prefWidth="200" />
-                                    <TableColumn fx:id="colGarantiaCliente" text="Cliente" prefWidth="200" />
-                                    <TableColumn fx:id="colGarantiaInicio" text="Inicio" prefWidth="120" />
-                                    <TableColumn fx:id="colGarantiaFin" text="Fin" prefWidth="120" />
-                                    <TableColumn fx:id="colGarantiaEstado" text="Estado" prefWidth="120" />
-                                    <TableColumn fx:id="colGarantiaDias" text="Días" prefWidth="80" />
+                                    <TableColumn fx:id="colGarantiaProducto" text="Producto" prefWidth="180" />
+                                    <TableColumn fx:id="colGarantiaCliente" text="Cliente" prefWidth="180" />
+                                    <TableColumn fx:id="colGarantiaInicio" text="Inicio" prefWidth="100" />
+                                    <TableColumn fx:id="colGarantiaFin" text="Fin" prefWidth="100" />
+                                    <TableColumn fx:id="colGarantiaEstado" text="Estado" prefWidth="100" />
+                                    <TableColumn fx:id="colGarantiaDias" text="Días" prefWidth="60" />
+                                    <TableColumn fx:id="colGarantiaVer" text="Ver" prefWidth="80" />
+                                    <TableColumn fx:id="colGarantiaEliminar" text="Eliminar" prefWidth="100" />
                                 </columns>
                             </TableView>
                         </VBox>

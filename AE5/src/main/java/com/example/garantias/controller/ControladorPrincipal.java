@@ -56,6 +56,12 @@ public class ControladorPrincipal {
     private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaDias;
 
     @FXML
+    private TableColumn<com.example.garantias.model.Garantia, Void> colGarantiaVer;
+
+    @FXML
+    private TableColumn<com.example.garantias.model.Garantia, Void> colGarantiaEliminar;
+
+    @FXML
     private TextField tfBuscarGarantia;
 
     @FXML
@@ -107,6 +113,41 @@ public class ControladorPrincipal {
         colGarantiaDias.setCellValueFactory(c -> new javafx.beans.property.SimpleStringProperty(String.valueOf(c.getValue().getFechaFinGarantia() == null ? 0 : java.time.temporal.ChronoUnit.DAYS.between(java.time.LocalDate.now(), c.getValue().getFechaFinGarantia()))));
         tablaGarantias.setItems(garantiasObs);
 
+        // Column 'Ver' con botón
+        colGarantiaVer.setCellFactory(col -> new TableCell<>() {
+            private final Button btn = new Button("Ver");
+            {
+                btn.setOnAction(e -> {
+                    com.example.garantias.model.Garantia g = getTableView().getItems().get(getIndex());
+                    mostrarDetalleGarantia(g);
+                });
+                btn.getStyleClass().add("btn-info");
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) setGraphic(null);
+                else setGraphic(btn);
+            }
+        });
+
+        // Column 'Eliminar' con botón
+        colGarantiaEliminar.setCellFactory(col -> new TableCell<>() {
+            private final Button btn = new Button("Eliminar");
+            {
+                btn.setOnAction(e -> {
+                    com.example.garantias.model.Garantia g = getTableView().getItems().get(getIndex());
+                    confirmarYEliminar(g);
+                });
+                btn.getStyleClass().add("btn-danger");
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) setGraphic(null);
+                else setGraphic(btn);
+            }
+        });
         cbEstado.setItems(FXCollections.observableArrayList("Todas", "ACTIVA", "POR_EXPIRAR", "EXPIRADA"));
         cbEstado.setValue("Todas");
 
@@ -179,6 +220,51 @@ public class ControladorPrincipal {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private void mostrarDetalleGarantia(com.example.garantias.model.Garantia g) {
+        if (g == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Factura: ").append(g.getFacturaId()).append("\n");
+        sb.append("Linea: ").append(g.getLineaFacturaId()).append("\n");
+        sb.append("Producto: ").append(g.getNombreProducto()).append("\n");
+        sb.append("Cliente: ").append(g.getNombreCliente()).append("\n");
+        sb.append("Inicio garantía: ").append(g.getFechaInicioGarantia()).append("\n");
+        sb.append("Fin garantía: ").append(g.getFechaFinGarantia()).append("\n");
+        sb.append("Estado: ").append(g.getEstado()).append("\n");
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Detalle de garantía");
+        a.setHeaderText("Garantía detalle");
+        a.setContentText(sb.toString());
+        a.showAndWait();
+    }
+
+    private void confirmarYEliminar(com.example.garantias.model.Garantia g) {
+        if (g == null) return;
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "¿Confirmas eliminar la garantía de la línea " + g.getLineaFacturaId() + "?", ButtonType.YES, ButtonType.NO);
+        confirm.showAndWait().ifPresent(bt -> {
+            if (bt == ButtonType.YES) {
+                new Thread(() -> {
+                    try {
+                        boolean ok = servicioMongo.eliminarGarantiaPorLinea(g.getLineaFacturaId());
+                        Platform.runLater(() -> {
+                            if (ok) {
+                                garantiasObs.remove(g);
+                                cargarEstadisticas();
+                                Alert info = new Alert(Alert.AlertType.INFORMATION, "Garantía eliminada.");
+                                info.showAndWait();
+                            } else {
+                                Alert err = new Alert(Alert.AlertType.ERROR, "No se pudo eliminar la garantía.");
+                                err.showAndWait();
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "Error al eliminar: " + e.getMessage()).showAndWait());
+                    }
+                }).start();
+            }
+        });
     }
 
     private void cargarEstadisticas() {
