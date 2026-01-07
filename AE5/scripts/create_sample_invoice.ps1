@@ -5,34 +5,42 @@ Param(
     [string]$pass = 'admin'
 )
 
-function rpc($endpoint, $params, $websession){
-    $body = @{ jsonrpc = '2.0'; method = 'call'; params = $params } | ConvertTo-Json -Depth 10
-    return Invoke-RestMethod -Uri "$url/$endpoint" -Method Post -Body $body -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
+function rpc_callkw($model, $method, $args, $websession){
+    $params = @{ model = $model; method = $method; args = @( $args ); kwargs = @{} }
+    $body = @{ jsonrpc = '2.0'; method = 'call'; params = $params }
+    $resp = Invoke-RestMethod -Uri "$url/web/dataset/call_kw" -Method Post -Body ($body | ConvertTo-Json -Depth 12) -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
+    Write-Host "RPC $model.$method -> raw response:" ($resp | ConvertTo-Json -Depth 10)
+    return $resp
 }
 
 Write-Host "Autenticando..."
 $websession = New-Object Microsoft.PowerShell.Commands.WebRequestSession
-$authBody = @{ db = $db; login = $user; password = $pass }
-$authResp = rpc 'web/session/authenticate' $authBody $websession
+$authBody = @{ jsonrpc = '2.0'; method = 'call'; params = @{ db = $db; login = $user; password = $pass } }
+$authResp = Invoke-RestMethod -Uri "$url/web/session/authenticate" -Method Post -Body ($authBody | ConvertTo-Json -Depth 6) -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
 if (-not $authResp.result) { Write-Host "Auth failed: $($authResp | ConvertTo-Json)"; exit 1 }
 Write-Host "Autenticado. UID: $($authResp.result.uid)"
 
 # Crear partner
-$partnerBody = @{ jsonrpc = '2.0'; method = 'call'; params = @{ args = @( @( @{ name = 'Cliente Demo'; email = 'cliente@example.com' } ) ); kwargs = @{} } }
-$partnerResp = Invoke-RestMethod -Uri "$url/web/dataset/call_kw/res.partner/create" -Method Post -Body ($partnerBody | ConvertTo-Json -Depth 10) -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
+$partnerResp = rpc_callkw 'res.partner' 'create' @( @{ name = 'Cliente Demo'; email = 'cliente@example.com' } ) $websession
 $partnerId = $partnerResp.result
 Write-Host "Partner creado: $partnerId"
 
 # Crear producto
-$productBody = @{ jsonrpc = '2.0'; method = 'call'; params = @{ args = @( @( @{ name = 'Bicicleta Demo'; list_price = 1000.0 } ) ); kwargs = @{} } }
-$productResp = Invoke-RestMethod -Uri "$url/web/dataset/call_kw/product.product/create" -Method Post -Body ($productBody | ConvertTo-Json -Depth 10) -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
+$productResp = rpc_callkw 'product.product' 'create' @( @{ name = 'Bicicleta Demo'; list_price = 1000.0 } ) $websession
 $productId = $productResp.result
 Write-Host "Product creado: $productId"
 
 # Crear factura (account.move) con una línea
 $lineValues = @{ name = 'Bicicleta Demo'; product_id = $productId; quantity = 1; price_unit = 1000 }
 $moveValues = @{ move_type = 'out_invoice'; invoice_date = (Get-Date -Format yyyy-MM-dd); partner_id = $partnerId; invoice_line_ids = @( @(0,0,$lineValues) ) }
-$moveBody = @{ jsonrpc = '2.0'; method = 'call'; params = @{ args = @( @( $moveValues ) ); kwargs = @{} } }
-$moveResp = Invoke-RestMethod -Uri "$url/web/dataset/call_kw/account.move/create" -Method Post -Body ($moveBody | ConvertTo-Json -Depth 12) -ContentType 'application/json' -WebSession $websession -ErrorAction Stop
+$moveResp = rpc_callkw 'account.move' 'create' @( $moveValues ) $websession
 $moveId = $moveResp.result
 Write-Host "Factura creada: $moveId"
+
+# Publicar la factura (button_post)
+if ($moveId) {
+    $postResp = rpc_callkw 'account.move' 'action_post' @( @( $moveId ) ) $websession
+    Write-Host "Post response:" ($postResp | ConvertTo-Json -Depth 10)
+} else {
+    Write-Host "No se pudo crear la factura; revisar respuesta anterior." -ForegroundColor Yellow
+}

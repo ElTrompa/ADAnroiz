@@ -1,5 +1,6 @@
 package com.example.garantias.controller;
 
+import com.example.garantias.model.Factura;
 import com.example.garantias.model.SesionOdoo;
 import com.example.garantias.service.ServicioMongoDB;
 import com.example.garantias.service.ServicioOdoo;
@@ -25,34 +26,34 @@ public class ControladorPrincipal {
     private javafx.scene.control.Button btnActualizarFacturas;
 
     @FXML
-    private TableColumn<?, ?> colFacturaNumero;
+    private TableColumn<com.example.garantias.model.Factura, String> colFacturaNumero;
 
     @FXML
-    private TableColumn<?, ?> colFacturaCliente;
+    private TableColumn<com.example.garantias.model.Factura, String> colFacturaCliente;
 
     @FXML
-    private TableColumn<?, ?> colFacturaFecha;
+    private TableColumn<com.example.garantias.model.Factura, String> colFacturaFecha;
 
     @FXML
-    private TableColumn<?, ?> colFacturaTotal;
+    private TableColumn<com.example.garantias.model.Factura, String> colFacturaTotal;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaProducto;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaProducto;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaCliente;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaCliente;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaInicio;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaInicio;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaFin;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaFin;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaEstado;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaEstado;
 
     @FXML
-    private TableColumn<?, ?> colGarantiaDias;
+    private TableColumn<com.example.garantias.model.Garantia, String> colGarantiaDias;
 
     @FXML
     private TextField tfBuscarGarantia;
@@ -187,9 +188,8 @@ public class ControladorPrincipal {
                 long porExp = servicioMongo.contarGarantiasPorEstado(com.example.garantias.model.Garantia.Estado.POR_EXPIRAR);
                 long expiradas = servicioMongo.contarGarantiasPorEstado(com.example.garantias.model.Garantia.Estado.EXPIRADA);
                 List<com.example.garantias.model.Garantia> todas = servicioMongo.obtenerGarantias();
-                double totalVentas = 0;
+                double totalVentas = facturasObs.stream().mapToDouble(Factura::getMontoTotal).sum();
                 // sumar totales de facturas que están en el sistema
-                for (com.example.garantias.model.Factura f : facturasObs) totalVentas += f.getMontoTotal();
 
                 Platform.runLater(() -> {
                     lblActivas.setText(String.valueOf(activas));
