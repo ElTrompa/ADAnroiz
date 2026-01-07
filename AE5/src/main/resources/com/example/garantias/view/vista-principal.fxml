@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.chart.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.garantias.controller.ControladorPrincipal">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.garantias.controller.ControladorPrincipal">
     <top>
         <ToolBar>
             <Label text="Sistema de Garantías - Ciclismo" />
@@ -12,16 +13,17 @@
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="Facturas" closable="false">
+                <Tab closable="false" text="Facturas">
                     <content>
                         <VBox spacing="8">
-                            <Button fx:id="btnActualizarFacturas" text="Actualizar Facturas" onAction="#onActualizarFacturas" />
+                            <Button fx:id="btnActualizarFacturas" onAction="#onActualizarFacturas" text="Actualizar Facturas" />
                             <TableView fx:id="tablaFacturas" prefHeight="300.0">
                                 <columns>
-                                    <TableColumn fx:id="colFacturaNumero" text="Número" prefWidth="150" />
-                                    <TableColumn fx:id="colFacturaCliente" text="Cliente" prefWidth="250" />
-                                    <TableColumn fx:id="colFacturaFecha" text="Fecha" prefWidth="120" />
-                                    <TableColumn fx:id="colFacturaTotal" text="Total" prefWidth="120" />
+                                    <TableColumn fx:id="colFacturaNumero" prefWidth="150" text="Número" />
+                                    <TableColumn fx:id="colFacturaCliente" prefWidth="250" text="Cliente" />
+                                    <TableColumn fx:id="colFacturaFecha" prefWidth="120" text="Fecha" />
+                                    <TableColumn fx:id="colFacturaTotal" prefWidth="120" text="Total" />
+                                    <TableColumn fx:id="colFacturaVer" prefWidth="80" text="Ver" />
                                 </columns>
                             </TableView>
                         </VBox>
@@ -33,18 +35,17 @@
                             <HBox spacing="8">
                                 <TextField fx:id="tfBuscarGarantia" promptText="Buscar..." />
                                 <ChoiceBox fx:id="cbEstado" />
-                                <Button text="Actualizar" onAction="#onActualizarGarantias" />
-                            </HBox>
+                                <Button onAction="#onActualizarGarantias" text="Actualizar" />                                <Button fx:id="btnCrearGarantiaManual" onAction="#onCrearGarantiaManual" text="Crear garantía" />                            </HBox>
                             <TableView fx:id="tablaGarantias" prefHeight="300.0">
                                 <columns>
-                                    <TableColumn fx:id="colGarantiaProducto" text="Producto" prefWidth="180" />
-                                    <TableColumn fx:id="colGarantiaCliente" text="Cliente" prefWidth="180" />
-                                    <TableColumn fx:id="colGarantiaInicio" text="Inicio" prefWidth="100" />
-                                    <TableColumn fx:id="colGarantiaFin" text="Fin" prefWidth="100" />
-                                    <TableColumn fx:id="colGarantiaEstado" text="Estado" prefWidth="100" />
-                                    <TableColumn fx:id="colGarantiaDias" text="Días" prefWidth="60" />
-                                    <TableColumn fx:id="colGarantiaVer" text="Ver" prefWidth="80" />
-                                    <TableColumn fx:id="colGarantiaEliminar" text="Eliminar" prefWidth="100" />
+                                    <TableColumn fx:id="colGarantiaProducto" prefWidth="180" text="Producto" />
+                                    <TableColumn fx:id="colGarantiaCliente" prefWidth="180" text="Cliente" />
+                                    <TableColumn fx:id="colGarantiaInicio" prefWidth="100" text="Inicio" />
+                                    <TableColumn fx:id="colGarantiaFin" prefWidth="100" text="Fin" />
+                                    <TableColumn fx:id="colGarantiaEstado" prefWidth="100" text="Estado" />
+                                    <TableColumn fx:id="colGarantiaDias" prefWidth="60" text="Días" />
+                                    <TableColumn fx:id="colGarantiaVer" prefWidth="80" text="Ver" />
+                                    <TableColumn fx:id="colGarantiaEliminar" prefWidth="100" text="Eliminar" />
                                 </columns>
                             </TableView>
                         </VBox>
@@ -54,7 +55,7 @@
                     <content>
                         <VBox spacing="10">
                             <HBox spacing="20">
-                                <VBox>
+                                <VBox prefHeight="34.0" prefWidth="77.0">
                                     <Label text="Total Ventas" />
                                     <Label fx:id="lblTotalVentas" text="0 €" />
                                 </VBox>
@@ -76,8 +77,8 @@
                                 </VBox>
                             </HBox>
                             <HBox spacing="20">
-                                <PieChart fx:id="pieEstados" prefWidth="300" prefHeight="250" />
-                                <BarChart fx:id="barVentas" prefWidth="400" prefHeight="250">
+                                <PieChart fx:id="pieEstados" prefHeight="250" prefWidth="300" />
+                                <BarChart fx:id="barVentas" prefHeight="250" prefWidth="400">
                                     <xAxis>
                                         <CategoryAxis />
                                     </xAxis>

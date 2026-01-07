@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -60,6 +61,9 @@ public class ControladorPrincipal {
 
     @FXML
     private TableColumn<com.example.garantias.model.Garantia, Void> colGarantiaEliminar;
+
+    @FXML
+    private TableColumn<com.example.garantias.model.Factura, Void> colFacturaVer;
 
     @FXML
     private TextField tfBuscarGarantia;
@@ -148,6 +152,26 @@ public class ControladorPrincipal {
                 else setGraphic(btn);
             }
         });
+
+        // Column 'Ver' para facturas
+        colFacturaVer.setCellFactory(col -> new TableCell<>() {
+            private final Button btn = new Button("Ver");
+            {
+                btn.setOnAction(e -> {
+                    com.example.garantias.model.Factura f = getTableView().getItems().get(getIndex());
+                    mostrarDetalleFactura(f);
+                });
+                btn.getStyleClass().add("btn-info");
+            }
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) setGraphic(null);
+                else setGraphic(btn);
+            }
+        });
+
+
         cbEstado.setItems(FXCollections.observableArrayList("Todas", "ACTIVA", "POR_EXPIRAR", "EXPIRADA"));
         cbEstado.setValue("Todas");
 
@@ -239,6 +263,141 @@ public class ControladorPrincipal {
         a.setHeaderText("Garantía detalle");
         a.setContentText(sb.toString());
         a.showAndWait();
+    }
+
+    private void mostrarDetalleFactura(com.example.garantias.model.Factura f) {
+        if (f == null) return;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Factura: ").append(f.getId()).append(" - ").append(f.getNombre()).append("\n");
+        sb.append("Cliente: ").append(f.getNombreCliente()).append("\n");
+        sb.append("Fecha: ").append(f.getFechaFactura()).append("\n");
+        sb.append("Total: ").append(String.format("%.2f €", f.getMontoTotal())).append("\n\n");
+        sb.append("Líneas:\n");
+        if (f.getLineas() != null) {
+            for (com.example.garantias.model.LineaFactura lf : f.getLineas()) {
+                sb.append("  - LineaId: ").append(lf.getId()).append(" | Producto: ").append(lf.getNombreProducto()).append(" | Cantidad: ").append(lf.getCantidad()).append("\n");
+            }
+        }
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Detalle de factura");
+        a.setHeaderText("Factura detalle");
+        a.setContentText(sb.toString());
+        a.getDialogPane().setPrefWidth(480);
+        a.showAndWait();
+    }
+
+    private void crearGarantiasDesdeFactura(com.example.garantias.model.Factura f) {
+        if (f == null) return;
+        new Thread(() -> {
+            try {
+                int created = 0;
+                int skipped = 0;
+                int mesesGarantia = 12;
+                if (f.getLineas() != null) {
+                    for (com.example.garantias.model.LineaFactura lf : f.getLineas()) {
+                        if (!servicioMongo.existeGarantiaPorLinea(lf.getId())) {
+                            servicioMongo.crearGarantiaDesdeLinea(f.getId(), f.getNombre(), lf, f.getNombreCliente(), mesesGarantia);
+                            created++;
+                        } else skipped++;
+                    }
+                }
+                final int c = created;
+                final int s = skipped;
+                Platform.runLater(() -> {
+                    Alert info = new Alert(Alert.AlertType.INFORMATION, "Garantías creadas: " + c + " (omitidas: " + s + ")");
+                    info.showAndWait();
+                    cargarGarantias();
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+                Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "Error creando garantías: " + e.getMessage()).showAndWait());
+            }
+        }).start();
+    }
+
+    @FXML
+    private void onCrearGarantiaManual() {
+        // Dialog para crear una garantía manualmente a partir de facturas cargadas
+        if (facturasObs.isEmpty()) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "No hay facturas cargadas. Actualiza las facturas primero.");
+            a.showAndWait();
+            return;
+        }
+
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Crear garantía manual");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        javafx.scene.control.ComboBox<com.example.garantias.model.Factura> cbFacturas = new javafx.scene.control.ComboBox<>(facturasObs);
+        cbFacturas.setCellFactory(lv -> new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(com.example.garantias.model.Factura item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : (item.getNombre() + " - " + (item.getNombreCliente() == null ? "--" : item.getNombreCliente())));
+            }
+        });
+        cbFacturas.setButtonCell(new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(com.example.garantias.model.Factura item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : (item.getNombre() + " - " + (item.getNombreCliente() == null ? "--" : item.getNombreCliente())));
+            }
+        });
+
+        javafx.scene.control.ComboBox<com.example.garantias.model.LineaFactura> cbLineas = new javafx.scene.control.ComboBox<>();
+
+        cbFacturas.getSelectionModel().selectedItemProperty().addListener((obs, oldV, newV) -> {
+            cbLineas.getItems().clear();
+            if (newV != null && newV.getLineas() != null) cbLineas.getItems().addAll(newV.getLineas());
+        });
+
+        javafx.scene.control.TextField tfMeses = new javafx.scene.control.TextField(String.valueOf(Integer.parseInt(System.getProperty("meses.garantia", "12"))));
+        tfMeses.setPromptText("Meses garantía");
+
+        GridPane gp = new GridPane();
+        gp.setHgap(10);
+        gp.setVgap(10);
+        gp.add(new Label("Factura:"), 0, 0);
+        gp.add(cbFacturas, 1, 0);
+        gp.add(new Label("Línea:"), 0, 1);
+        gp.add(cbLineas, 1, 1);
+        gp.add(new Label("Meses:"), 0, 2);
+        gp.add(tfMeses, 1, 2);
+
+        dialog.getDialogPane().setContent(gp);
+
+        dialog.setResultConverter(b -> {
+            if (b == ButtonType.OK) {
+                com.example.garantias.model.Factura selF = cbFacturas.getSelectionModel().getSelectedItem();
+                com.example.garantias.model.LineaFactura selL = cbLineas.getSelectionModel().getSelectedItem();
+                if (selF == null || selL == null) {
+                    Platform.runLater(() -> new Alert(Alert.AlertType.WARNING, "Selecciona factura y línea.").showAndWait());
+                    return null;
+                }
+                int meses = 12;
+                try { meses = Integer.parseInt(tfMeses.getText()); } catch (Exception ignored) {}
+                int finalMeses = meses;
+                new Thread(() -> {
+                    try {
+                        if (!servicioMongo.existeGarantiaPorLinea(selL.getId())) {
+                            servicioMongo.crearGarantiaDesdeLinea(selF.getId(), selF.getNombre(), selL, selF.getNombreCliente(), finalMeses);
+                            Platform.runLater(() -> {
+                                new Alert(Alert.AlertType.INFORMATION, "Garantía creada.").showAndWait();
+                                cargarGarantias();
+                            });
+                        } else {
+                            Platform.runLater(() -> new Alert(Alert.AlertType.INFORMATION, "Ya existe garantía para esa línea.").showAndWait());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> new Alert(Alert.AlertType.ERROR, "Error creando garantía: " + e.getMessage()).showAndWait());
+                    }
+                }).start();
+            }
+            return null;
+        });
+
+        dialog.showAndWait();
     }
 
     private void confirmarYEliminar(com.example.garantias.model.Garantia g) {
