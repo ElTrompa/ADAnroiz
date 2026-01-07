@@ -10,9 +10,9 @@
         </ToolBar>
     </top>
     <center>
-        <TabPane>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
             <tabs>
-                <Tab text="Facturas">
+                <Tab text="Facturas" closable="false">
                     <content>
                         <VBox spacing="8">
                             <Button fx:id="btnActualizarFacturas" text="Actualizar Facturas" onAction="#onActualizarFacturas" />
