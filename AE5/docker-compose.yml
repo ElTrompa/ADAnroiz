@@ -1,79 +1,67 @@
-version: '3.8'
-
 services:
+  # Base de datos PostgreSQL para Odoo
+  db:
+    image: postgres:15
+    container_name: odoo_db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo_password
+    volumes:
+      - odoo_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Servidor Odoo Community
   odoo:
     image: odoo:17.0
-    container_name: ae5-odoo
+    container_name: odoo_server
+    depends_on:
+      - db
     environment:
-      - DB_HOST=ae5-postgres
-      - DB_PORT=5432
-      - DB_USER=odoo
-      - DB_PASSWORD=odoo_password
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo_password
     ports:
       - "8069:8069"
     volumes:
-      - odoo_addons:/mnt/extra-addons
       - odoo_data:/var/lib/odoo
-      - ./odoo.conf:/etc/odoo/odoo.conf:ro
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - ae5-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8069"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+      - odoo_addons:/mnt/extra-addons
+      - ./config/odoo.conf:/etc/odoo/odoo.conf:ro
+    restart: unless-stopped
 
-  postgres:
-    image: postgres:15
-    container_name: ae5-postgres
-    environment:
-      - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=odoo_password
-      - POSTGRES_DB=postgres
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - ae5-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U odoo"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
+  # MongoDB para almacenar garantías
   mongodb:
     image: mongo:7.0
-    container_name: ae5-mongodb
+    container_name: garantias_mongodb
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin_password
-      MONGO_INITDB_DATABASE: ae5_warranty_db
-    ports:
-      - "27017:27017"
+      MONGO_INITDB_DATABASE: garantias_db
     volumes:
       - mongodb_data:/data/db
-      - ./scripts/init-mongodb.js:/docker-entrypoint-initdb.d/init.js:ro
-    networks:
-      - ae5-network
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/ae5_warranty_db -u admin -p admin_password --authenticationDatabase admin --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  # Mongo Express - Interfaz web para MongoDB (opcional)
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: mongo_express
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin_password
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin_password@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
 
 volumes:
-  postgres_data:
-    driver: local
+  odoo_db_data:
   odoo_data:
-    driver: local
   odoo_addons:
-    driver: local
   mongodb_data:
-    driver: local
-
-networks:
-  ae5-network:
-    driver: bridge

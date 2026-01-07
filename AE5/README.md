@@ -1,372 +1,722 @@
-# AE5 - Warranty Management System
+# Sistema de Gestión de Garantías
 
-A comprehensive warranty management system integrating **JavaFX** (desktop UI), **MongoDB** (warranty database), and **Odoo** (invoice management) via **Docker**.
+Sistema de escritorio desarrollado en JavaFX para la gestión de garantías de productos vendidos, integrado con Odoo ERP y MongoDB.
 
-## 📋 Overview
+## 📋 Descripción
 
-This is a university practice project for **Grado en Ingeniería Informática** (Bachelor's in Computer Engineering). The system allows:
+Esta aplicación permite gestionar las garantías de productos vendidos a través de facturas registradas en Odoo. El sistema sincroniza automáticamente las facturas de venta desde Odoo y permite crear, consultar y administrar garantías almacenadas en MongoDB.
 
-- **Authentication** (username/password login)
-- **Invoice Management** from Odoo (read-only, real-time queries)
-- **Warranty CRUD** operations stored in MongoDB
-- **Search & Filtering** by client, status, country, or invoice
-- **Docker Deployment** with full persistence
+**Nota:** En este proyecto los productos serán del mundo del ciclismo (bicicletas, cascos, ruedas, componentes, etc.). Todas las referencias, datos de ejemplo y vistas iniciales estarán orientadas a productos de ciclismo.
 
-## 🏗️ Architecture
+## 🛠️ Tecnologías Utilizadas
+
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| **Java** | 24 | Lenguaje principal |
+| **JavaFX** | 21 | Interfaz gráfica de usuario |
+| **Odoo** | 17+ | ERP origen de facturas |
+| **MongoDB** | 6.0+ | Base de datos para garantías |
+| **Maven** | 3.9+ | Gestión de dependencias y build |
+| **Gson** | 2.10+ | Procesamiento JSON |
+
+## 📁 Estructura del Proyecto
+
+```
+src/main/java/com/example/garantias/
+├── AplicacionGarantias.java      # Punto de entrada principal
+├── Launcher.java                  # Lanzador de la aplicación
+│
+├── controller/
+│   ├── ControladorLogin.java      # Controlador de autenticación
+│   └── ControladorPrincipal.java  # Controlador de vista principal
+│
+├── model/
+│   ├── Factura.java               # Modelo de factura de Odoo
+│   ├── LineaFactura.java          # Líneas/productos de factura
+│   ├── Garantia.java              # Modelo de garantía
+│   └── SesionOdoo.java            # Gestión de sesión Odoo
+│
+└── service/
+    ├── ServicioOdoo.java          # Comunicación con API Odoo
+    └── ServicioMongoDB.java       # Operaciones con MongoDB
+
+src/main/resources/com/example/garantias/view/
+├── vista-login.fxml               # Vista de inicio de sesión
+└── vista-principal.fxml           # Vista principal con pestañas
+```
+
+## 🔄 Flujo de la Aplicación
+
+### 1. Inicio de Sesión
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    JavaFX Desktop App                        │
-│             (Login, Invoices, Warranty Management)           │
-└──────────┬──────────────────────┬──────────────────────────┘
-           │                      │
-      XML-RPC (Odoo)        MongoDB Driver
-           │                      │
-┌──────────▼──────────┐   ┌──────▼──────────────┐
-│   Odoo (Docker)    │   │  MongoDB (Docker)   │
-│  - Invoices        │   │  - Warranties       │
-│  - Customers       │   │  - Persistence      │
-│  - Port 8069       │   │  - Port 27017       │
-└────────────────────┘   └─────────────────────┘
+│                    VISTA DE LOGIN                           │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │  Usuario:     [___________________]                  │   │
+│  │  Contraseña:  [___________________]                  │   │
+│  │                                                      │   │
+│  │           [ Iniciar Sesión ]                         │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+            ┌───────────────────────────────┐
+            │  1. Conectar a MongoDB        │
+            │  2. Autenticar en Odoo        │
+            │  3. Guardar sesión            │
+            └───────────────────────────────┘
 ```
 
-## 🧪 Technology Stack
+**Proceso:**
+1. Al abrir la aplicación, se conecta automáticamente a MongoDB
+2. El usuario ingresa credenciales de Odoo (usuario y contraseña)
+3. La aplicación autentica via JSON-RPC contra Odoo
+4. Se almacena la sesión (cookies) para mantener la conexión
+5. Si es exitoso, se abre la vista principal
 
-- **Java 21** + **Spring Boot 3.2** + **JavaFX 21**
-- **MongoDB 7.0** (document database)
-- **Odoo 17** (ERP system)
-- **PostgreSQL 15** (Odoo's database)
-- **Docker & docker-compose** (containerization)
-- **Apache XML-RPC** (Odoo API client)
-- **Spring Data MongoDB** (ORM)
+### 2. Vista Principal - Pestaña Facturas
 
-## 📦 Prerequisites
-
-- **Docker** & **docker-compose**
-- **Java 21 JDK**
-- **Maven 3.8+**
-- **Git**
-
-## 🚀 Quick Start
-
-### 1. Clone Repository
-```bash
-git clone https://github.com/yourusername/AE5.git
-cd AE5
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  Sistema de Garantías     Usuario: admin | BD: odoo  [Cerrar Sesión]│
+├─────────────────────────────────────────────────────────────────────┤
+│  [Facturas] [Garantías] [Estadísticas]                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  [Actualizar Facturas]                                              │
+├────────────────────────────────┬────────────────────────────────────┤
+│     FACTURAS DE VENTA          │      LÍNEAS DE FACTURA             │
+│  ┌──────────────────────────┐  │  ┌──────────────────────────────┐  │
+│  │ Número | Cliente | Total │  │  │ Producto | Cant | Garantía   │  │
+│  ├──────────────────────────┤  │  ├──────────────────────────────┤  │
+│  │ INV001 | Cliente1| 100€  │◄─┼──│ Laptop   |  1   | [✓ Creada] │  │
+│  │ INV002 | Cliente2| 250€  │  │  │ Mouse    |  2   | [✓ Creada] │  │
+│  │ INV003 | Cliente3| 500€  │  │  │ Teclado  |  1   | [✓ Creada] │  │
+│  └──────────────────────────┘  │  └──────────────────────────────┘  │
+└────────────────────────────────┴────────────────────────────────────┘
 ```
 
-### 2. Start Docker Services
+**Proceso:**
+1. Al hacer clic en "Actualizar Facturas":
+   - Se consultan facturas de venta (`out_invoice`) desde Odoo
+   - Para cada factura se cargan sus líneas (productos)
+   - **Automáticamente** se crean garantías de 12 meses para cada producto
+2. Al seleccionar una factura, se muestran sus líneas en el panel derecho
+3. Cada línea muestra si ya tiene garantía creada
+
+### 3. Vista Principal - Pestaña Garantías
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  [Facturas] [Garantías] [Estadísticas]                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  [Actualizar]  Buscar: [____________]  Estado: [Todas ▼]            │
+├─────────────────────────────────────────────────────────────────────┤
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │ Producto  │ Cliente  │ Inicio    │ Fin       │ Estado │ Días │  │
+│  ├───────────────────────────────────────────────────────────────┤  │
+│  │ Laptop    │ Cliente1 │ 01/01/26  │ 01/01/27  │ Activa │ 359  │  │
+│  │ Mouse     │ Cliente2 │ 15/12/25  │ 15/12/26  │ Activa │ 342  │  │
+│  │ Impresora │ Cliente3 │ 01/06/25  │ 01/06/26  │ Por Exp│  15  │  │
+│  │ Monitor   │ Cliente4 │ 01/01/25  │ 01/01/26  │ Expirada│  0  │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Funcionalidades:**
+- **Buscar**: Filtrar por producto, cliente o número de serie
+- **Filtrar por estado**: Todas, Activas, Por Expirar, Expiradas
+- **Ver detalles**: Información completa de la garantía
+- **Eliminar**: Borrar garantía de MongoDB
+
+**Estados de Garantía:**
+| Estado | Descripción | Condición |
+|--------|-------------|-----------|
+| 🟢 **Activa** | Garantía vigente | Más de 30 días restantes |
+| 🟡 **Por Expirar** | Próxima a vencer | Menos de 30 días restantes |
+| 🔴 **Expirada** | Garantía vencida | Fecha fin pasada |
+
+### 4. Vista Principal - Pestaña Estadísticas
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  [Facturas] [Garantías] [Estadísticas]                              │
+├─────────────────────────────────────────────────────────────────────┤
+│  [Actualizar Estadísticas]  Período: [Todo ▼]                       │
+├─────────────────────────────────────────────────────────────────────┤
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐            │
+│  │Total Vent│  │ Facturas │  │Gar.Activ │  │Gar.Expir │            │
+│  │ 5,000€   │  │    25    │  │    18    │  │    7     │            │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘            │
+├─────────────────────────────────────────────────────────────────────┤
+│  ┌─────────────────────────┐  ┌─────────────────────────┐          │
+│  │   VENTAS POR CLIENTE    │  │  ESTADO DE GARANTÍAS    │          │
+│  │   ████████              │  │      ┌────┐             │          │
+│  │   ████                  │  │     /      \            │          │
+│  │   ██████████            │  │    │Activas│            │          │
+│  │   [Gráfico de Barras]   │  │     \______/            │          │
+│  └─────────────────────────┘  └─────────────────────────┘          │
+│  ┌───────────────────────────────────────────────────────┐         │
+│  │              VENTAS MENSUALES                         │         │
+│  │         ___/\___                                      │         │
+│  │    ___/        \___                                   │         │
+│  │   [Gráfico de Líneas]                                 │         │
+│  └───────────────────────────────────────────────────────┘         │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Gráficos disponibles:**
+1. **Ventas por Cliente** (Gráfico de Barras): Top clientes por monto
+2. **Estado de Garantías** (Gráfico Circular): Distribución Activas/Por Expirar/Expiradas
+3. **Ventas Mensuales** (Gráfico de Líneas): Tendencia de ventas en el tiempo
+
+## 🔌 Integración con Sistemas
+
+### Comunicación con Odoo (JSON-RPC)
+
+```
+┌─────────────┐         JSON-RPC          ┌─────────────┐
+│  JavaFX     │ ◄──────────────────────► │   Odoo      │
+│  App        │    /web/session/auth      │   ERP       │
+│             │    /web/dataset/call_kw   │             │
+└─────────────┘                           └─────────────┘
+```
+
+**Endpoints utilizados:**
+- `/web/session/authenticate` - Autenticación
+- `/web/dataset/call_kw/account.move/search` - Buscar facturas
+- `/web/dataset/call_kw/account.move/read` - Leer facturas
+- `/web/dataset/call_kw/account.move.line/read` - Leer líneas
+
+### Comunicación con MongoDB
+
+```
+┌─────────────┐        MongoDB Driver     ┌─────────────┐
+│  JavaFX     │ ◄──────────────────────► │  MongoDB    │
+│  App        │     garantias_db          │  Server     │
+│             │     warranties            │             │
+└─────────────┘                           └─────────────┘
+```
+
+**Colección `warranties`:**
+```json
+{
+  "_id": ObjectId,
+  "facturaId": 123,
+  "nombreFactura": "INV/2026/0001",
+  "lineaFacturaId": 456,
+  "productoId": 789,
+  "nombreProducto": "Laptop HP",
+  "nombreCliente": "Empresa S.L.",
+  "fechaCompra": ISODate,
+  "fechaInicioGarantia": ISODate,
+  "fechaFinGarantia": ISODate,
+  "mesesGarantia": 12,
+  "estado": "ACTIVA",
+  "notas": "...",
+  "numeroSerie": "SN123456"
+}
+```
+
+## ⚙️ Configuración
+
+### Requisitos Previos
+
+1. **Java 24** instalado
+2. **Odoo 17+** ejecutándose en `http://localhost:8069`
+3. **MongoDB** ejecutándose en `localhost:27017`
+
+### Configuración por Defecto
+
+| Parámetro | Valor | Archivo |
+|-----------|-------|---------|
+| URL Odoo | `http://localhost:8069` | `ControladorLogin.java` |
+| Base datos Odoo | `odoo` | `ControladorLogin.java` |
+| MongoDB URI | `mongodb://admin:admin_password@localhost:27017` | `ServicioMongoDB.java` |
+| Base datos MongoDB | `garantias_db` | `ServicioMongoDB.java` |
+| Meses garantía | `12` | `ControladorPrincipal.java` |
+| Productos | `Ciclismo` | `README.md` |
+
+### Docker (Servicios)
+
+El proyecto trae un `docker-compose.yml` con servicios para **Odoo (v17)**, **PostgreSQL** y **MongoDB** (más una interfaz opcional `mongo-express`). A continuación el ejemplo de configuración incluido:
+
+```yaml
+services:
+  # Base de datos PostgreSQL para Odoo
+  db:
+    image: postgres:15
+    container_name: odoo_db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo_password
+    volumes:
+      - odoo_db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # Servidor Odoo Community
+  odoo:
+    image: odoo:17.0
+    container_name: odoo_server
+    depends_on:
+      - db
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo_password
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - odoo_addons:/mnt/extra-addons
+    restart: unless-stopped
+
+  # MongoDB para almacenar garantías
+  mongodb:
+    image: mongo:7.0
+    container_name: garantias_mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin_password
+      MONGO_INITDB_DATABASE: garantias_db
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    restart: unless-stopped
+
+  # Mongo Express - Interfaz web para MongoDB (opcional)
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: mongo_express
+    depends_on:
+      - mongodb
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin_password
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin_password@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+```
+
+Instrucciones rápidas:
+
+1. Levanta los contenedores:
+
 ```bash
+docker-compose down ; docker-compose up -d
+```
+
+2. **Odoo** estará disponible en `http://localhost:8069` (la primera vez hará la instalación guiada). Para crear la base llamada `garantias` rellena el formulario con:
+   - Master Password: `admin`
+   - Database Name: `garantias`
+   - Email: `admin@example.com`
+   - Password: `admin`
+   - Marca **Demo Data** si quieres datos de ejemplo (recomendado para pruebas)
+
+3. **Postgres** escucha en `localhost:5432` (usuario `odoo` / `odoo_password`).
+4. **MongoDB** en `mongodb://admin:admin_password@localhost:27017` y **Mongo Express** en `http://localhost:8081`.
+5. Si cambias credenciales, actualiza `src/main/resources/application.properties` o las referencias en código.
+
+## 🚀 Ejecución
+
+### Iniciar servicios
+
+```bash
+# Iniciar MongoDB con Docker
 docker-compose up -d
+
+# O iniciar contenedor existente
+docker start garantias_mongodb
 ```
 
-This brings up:
-- **Odoo** @ `http://localhost:8069` (user: admin / password: admin)
-- **MongoDB** @ `mongodb://localhost:27017` (user: admin / password: admin_password)
-- **PostgreSQL** for Odoo (internal)
+### Compilar y ejecutar
 
-### 3. Wait for Odoo Initialization
 ```bash
-# Check Odoo is ready (may take 1-2 minutes)
-docker logs ae5-odoo | grep "Odoo"
+# Compilar
+.\mvnw.cmd compile
+
+# Ejecutar
+.\mvnw.cmd javafx:run
 ```
 
-### 4. Create Demo Invoices in Odoo (Optional)
-1. Access Odoo at `http://localhost:8069`
-2. Login with **admin** / **admin**
-3. Create a few invoices manually or via API for testing
+## 📊 Modelo de Datos
 
-### 5. Build & Run JavaFX App
-```bash
-# Build
-mvn clean package
+### Clase Garantia
 
-# Run (using JavaFX plugin)
-mvn javafx:run
-
-# OR run standalone JAR
-java -jar target/ae5-warranty-system-1.0.0.jar
-```
-
-### 6. Login
-- **Username:** `admin`
-- **Password:** `admin`
-
-## 📚 Features
-
-### ✅ Authentication (Task 1)
-- Simple login screen with username/password
-- Session control (hardcoded for MVP: admin/admin)
-- Access control to main views
-
-### ✅ Invoice Management (Task 2)
-- Real-time connection to Odoo via XML-RPC
-- Display: Invoice #, Client, Date, Amount
-- Refresh button to sync from Odoo
-- **Note:** Invoices are queried live, not stored in MongoDB
-
-### ✅ Warranty Management (Task 3)
-- **Fields:**
-  - ID (auto-generated UUID)
-  - Invoice ID (links to Odoo)
-  - Client name
-  - Purchase date
-  - Address & Country
-  - Warranty start/end dates
-  - Status (ACTIVE, EXPIRED, CANCELLED)
-  - Description
-  - Timestamps (createdAt, updatedAt)
-
-- **CRUD Operations:**
-  - ➕ **Create** new warranty
-  - 📖 **Read** / list all warranties
-  - ✏️ **Edit** existing warranty
-  - ❌ **Delete** warranty
-
-### ✅ Search & Filtering (Task 4)
-- Filter by **Client** (substring match)
-- Filter by **Status** (ACTIVE, EXPIRED, CANCELLED)
-- Filter by **Country**
-- Combine filters for advanced search
-- Results displayed in real-time table
-
-### ✅ GUI (JavaFX)
-- **Login Screen:** Clean form with error handling
-- **Main Window:** Tabbed interface
-  - **Invoices Tab:** Read-only table from Odoo
-  - **Guarantees Tab:** Full CRUD with form modal
-- **Menu Bar:** File (Exit), Help (About)
-- **Responsive:** Resizable windows, scrollable tables
-
-## 🐳 Docker Deployment
-
-### Services Overview
-
-| Service | Port | Credentials | Volume |
-|---------|------|-------------|--------|
-| Odoo | 8069 | admin/admin | odoo_data |
-| MongoDB | 27017 | admin/admin_password | mongodb_data |
-| PostgreSQL | 5432 (internal) | odoo/odoo_password | postgres_data |
-
-### Environment Variables
-```bash
-# Odoo (auto-configured)
-POSTGRES_USER=odoo
-POSTGRES_PASSWORD=odoo_password
-
-# MongoDB (auto-configured)
-MONGO_INITDB_ROOT_USERNAME=admin
-MONGO_INITDB_ROOT_PASSWORD=admin_password
-```
-
-### Persistence
-All data is stored in Docker volumes:
-- `postgres_data` – Odoo database
-- `odoo_data` – Odoo addons & filestore
-- `mongodb_data` – Warranty documents
-- `odoo_addons` – Custom Odoo modules
-
-### Stop Services
-```bash
-docker-compose down
-```
-
-### Reset Everything
-```bash
-docker-compose down -v  # Remove all volumes
-docker-compose up -d    # Restart fresh
-```
-
-## 🔌 API Details
-
-### Odoo XML-RPC Endpoints
-- **Common:** `http://localhost:8069/xmlrpc/2/common`
-  - `authenticate(db, login, password)` → uid
-- **Object:** `http://localhost:8069/xmlrpc/2/object`
-  - `execute(db, uid, password, model, method, args)`
-
-**Example:** Fetch invoices
 ```java
-OdooService odooService = // ... get from Spring
-List<Invoice> invoices = odooService.getInvoices();
+public class Garantia {
+    private ObjectId id;           // ID MongoDB
+    private int facturaId;         // ID factura en Odoo
+    private String nombreFactura;  // Ej: "INV/2026/0001"
+    private int lineaFacturaId;    // ID línea en Odoo
+    private int productoId;        // ID producto en Odoo
+    private String nombreProducto; // Nombre del producto
+    private String nombreCliente;  // Cliente de la factura
+    private LocalDate fechaCompra; // Fecha de la factura
+    private LocalDate fechaInicioGarantia;
+    private LocalDate fechaFinGarantia;
+    private int mesesGarantia;     // Duración (default: 12)
+    private String estado;         // ACTIVA, POR_EXPIRAR, EXPIRADA
+    private String notas;
+    private String numeroSerie;
+}
 ```
 
-### MongoDB Collections
-- **guarantees:** Stores all warranty documents
-- **Indexes:** client, status, country, invoiceId (for fast queries)
+## 🔐 Gestión de Sesión
 
-**Example:** Create warranty
-```java
-GuaranteeService guaranteeService = // ... get from Spring
-Guarantee g = new Guarantee();
-g.setClient("John Doe");
-// ... set other fields
-guaranteeService.createGuarantee(g);
-```
-
-## 📂 Project Structure
-
-```
-AE5/
-├── pom.xml                              # Maven dependencies
-├── docker-compose.yml                   # Docker services
-├── scripts/
-│   └── init-mongodb.js                  # MongoDB initialization
-├── src/main/
-│   ├── java/
-│   │   ├── module-info.java             # Module definition
-│   │   └── com/example/ae5/
-│   │       ├── Launcher.java            # Spring Boot bootstrap
-│   │       ├── HelloApplication.java    # JavaFX entry point
-│   │       ├── model/
-│   │       │   ├── Guarantee.java       # Warranty document
-│   │       │   └── Invoice.java         # Invoice DTO
-│   │       ├── repository/
-│   │       │   └── GuaranteeRepository.java  # MongoDB DAO
-│   │       ├── service/
-│   │       │   ├── OdooService.java     # Odoo integration
-│   │       │   └── GuaranteeService.java    # Business logic
-│   │       ├── ui/
-│   │       │   ├── LoginController.java
-│   │       │   ├── MainViewController.java
-│   │       │   └── GuaranteeFormController.java
-│   │       └── config/
-│   │           └── AppConfig.java       # Spring configuration
-│   └── resources/
-│       ├── application.yml              # Spring config
-│       └── logback.xml                  # Logging config
-├── .gitignore
-└── README.md (this file)
-```
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-- [ ] Docker services start without errors
-- [ ] Odoo accessible at localhost:8069
-- [ ] MongoDB accessible at localhost:27017
-- [ ] Login with admin/admin works
-- [ ] Invoice list loads from Odoo
-- [ ] Can create, edit, delete warranties
-- [ ] Filtering by client, status, country works
-- [ ] Search combines multiple filters correctly
-- [ ] Warranty dates are persistent in MongoDB
-
-### Automated Tests
-```bash
-# Run JUnit tests
-mvn test
-
-# Run integration tests with Docker
-mvn verify
-```
-
-## 🛠️ Troubleshooting
-
-### Odoo Not Starting
-```bash
-docker logs ae5-odoo
-# Wait 2-3 minutes for PostgreSQL to initialize
-# Check postgresql health:
-docker logs ae5-postgres
-```
-
-### MongoDB Connection Refused
-```bash
-docker logs ae5-mongodb
-# Verify port 27017 is not used:
-lsof -i :27017
-```
-
-### Spring Boot won't find Odoo
-```yaml
-# Check application.yml
-odoo:
-  url: http://localhost:8069  # From Java POV
-  # NOT http://ae5-odoo:8069 (that's Docker-only)
-```
-
-### GUI doesn't appear
-```bash
-# On WSL2/headless systems, may need:
-export DISPLAY=:0
-mvn javafx:run
-```
-
-## 📖 API Documentation
-
-### OdooService
-```java
-public List<Invoice> getInvoices()        // Fetch all invoices from Odoo
-public Invoice getInvoiceById(Long id)    // Get single invoice
-public void authenticate()                // Connect to Odoo
-```
-
-### GuaranteeService
-```java
-public Guarantee createGuarantee(Guarantee g)
-public Guarantee updateGuarantee(String id, Guarantee g)
-public void deleteGuarantee(String id)
-public Optional<Guarantee> getGuaranteeById(String id)
-public List<Guarantee> getAllGuarantees()
-public List<Guarantee> getGuaranteesByClient(String client)
-public List<Guarantee> getGuaranteesByStatus(String status)
-public List<Guarantee> getGuaranteesByCountry(String country)
-public List<Guarantee> getGuaranteesByInvoice(Long invoiceId)
-public List<Guarantee> searchGuarantees(String client, String status, String country)
-public void updateGuaranteeStatus(String id, String status)
-```
-
-## 📋 Default Credentials
-
-| System | Username | Password |
-|--------|----------|----------|
-| JavaFX App | admin | admin |
-| Odoo | admin | admin |
-| MongoDB | admin | admin_password |
-
-## 📝 Configuration Files
-
-### application.yml
-```yaml
-spring:
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/ae5_warranty_db
-odoo:
-  url: http://localhost:8069
-  db: odoo
-  username: admin
-  password: admin
-```
-
-### pom.xml
-Key dependencies:
-- `spring-boot-starter-web` – REST & Spring MVC
-- `spring-boot-starter-data-mongodb` – MongoDB ORM
-- `javafx-*` – GUI framework
-- `org.apache.xmlrpc:xmlrpc-client` – Odoo API
-
-## 🎯 Next Steps / Future Enhancements
-
-- [ ] JWT authentication (replace hardcoded credentials)
-- [ ] REST API endpoints (expose CRUD via HTTP)
-- [ ] User roles & permissions
-- [ ] Warranty renewal notifications
-- [ ] Export to PDF/Excel
-- [ ] Email notifications
-- [ ] Advanced reporting & analytics
-- [ ] Multi-language support
-
-## 📄 License
-
-This is a university project. Feel free to use for educational purposes.
-
-## 👨‍🎓 Authors
-
-- **Andreu** (Student ID)
+La aplicación mantiene la sesión de Odoo usando:
+- **CookieManager**: Almacena cookies de sesión HTTP
+- **Reautenticación automática**: Si la sesión expira, se reautentica
+- **Singleton SesionOdoo**: Mantiene datos de usuario activo
 
 ---
 
-**Last Updated:** January 2026  
-**Version:** 1.0.0
+## 🔄 Flujo de Datos Detallado
+
+### Diagrama General del Flujo
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              FLUJO DE DATOS                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+     ┌──────────┐                                           ┌──────────┐
+     │  ODOO    │                                           │ MongoDB  │
+     │  (ERP)   │                                           │  (NoSQL) │
+     └────┬─────┘                                           └────┬─────┘
+          │                                                      │
+          │ JSON-RPC                                             │ Driver
+          │ (HTTP POST)                                          │ MongoDB
+          │                                                      │
+          ▼                                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CAPA DE SERVICIOS                                  │
+│  ┌─────────────────────────────┐    ┌─────────────────────────────────────┐ │
+│  │      ServicioOdoo           │    │        ServicioMongoDB              │ │
+│  │  ─────────────────────────  │    │  ─────────────────────────────────  │ │
+│  │  • autenticar()             │    │  • conectar()                       │ │
+│  │  • obtenerFacturas()        │    │  • guardarGarantía()                │ │
+│  │  • obtenerLineasFactura()   │    │  • obtenerGarantías()               │ │
+│  │  • reautenticar()           │    │  • eliminarGarantía()               │ │
+│  └─────────────────────────────┘    │  • contarGarantíasActivas()         │ │
+│                                      └─────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────┘
+          │                                                      │
+          │                                                      │
+          ▼                                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CAPA DE MODELOS                                 │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────┐  ┌──────────────┐  │
+│  │   Factura     │  │ LineaFactura  │  │   Garantía    │  │ SesionOdoo   │  │
+│  │  ───────────  │  │  ───────────  │  │  ───────────  │  │ ───────────  │  │
+│  │  id           │  │  id           │  │  id (ObjectId)│  │ url          │  │
+│  │  nombre       │  │  productoId   │  │  facturaId    │  │ baseDatos    │  │
+│  │  cliente      │  │  nombre       │  │  productoId   │  │ usuarioId    │  │
+│  │  fecha        │  │  cantidad     │  │  fechaInicio  │  │ contraseña   │  │
+│  │  montoTotal   │  │  precio       │  │  fechaFin     │  │              │  │
+│  │  líneas[]     │  │  facturaId    │  │  estado       │  │              │  │
+│  └───────────────┘  └───────────────┘  └───────────────┘  └──────────────┘  │
+└─────────────────────────────────────────────────────────────────────────────┘
+          │                                                      │
+          │                                                      │
+          ▼                                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           CAPA DE CONTROLADORES                              │
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                      ControladorPrincipal                               ││
+│  │  • Recibe eventos de UI (clics, selecciones)                            ││
+│  │  • Coordina llamadas a servicios                                        ││
+│  │  • Transforma datos entre Odoo y MongoDB                                ││
+│  │  • Actualiza las vistas (tablas, gráficos)                              ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+│  ┌─────────────────────────────────────────────────────────────────────────┐│
+│  │                      ControladorLogin                                   ││
+│  │  • Gestiona autenticación                                               ││
+│  │  • Valida credenciales                                                  ││
+│  │  • Inicia sesión en SesionOdoo                                          ││
+│  └─────────────────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CAPA DE VISTAS (FXML)                           │
+│  ┌───────────────────────────────┐  ┌───────────────────────────────────┐   │
+│  │      vista-login.fxml         │  │      vista-principal.fxml         │   │
+│  │  • Campo usuario              │  │  • TabPane (3 pestañas)           │   │
+│  │  • Campo contraseña           │  │  • Tablas de facturas/garantías   │   │
+│  │  • Botón iniciar sesión       │  │  • Gráficos de estadísticas       │   │
+│  └───────────────────────────────┘  └───────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Flujo 1: Autenticación
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                         FLUJO DE AUTENTICACIÓN                            │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  USUARIO              CONTROLADOR           SERVICIO              ODOO
+     │                     │                    │                    │
+     │  1. Ingresa         │                    │                    │
+     │  usuario/contraseña │                    │                    │
+     │────────────────────►│                    │                    │
+     │                     │                    │                    │
+     │                     │ 2. autenticar()    │                    │
+     │                     │───────────────────►│                    │
+     │                     │                    │                    │
+     │                     │                    │ 3. POST JSON-RPC   │
+     │                     │                    │ /web/session/auth  │
+     │                     │                    │───────────────────►│
+     │                     │                    │                    │
+     │                     │                    │ 4. {uid, cookies}  │
+     │                     │                    │◄───────────────────│
+     │                     │                    │                    │
+     │                     │ 5. uid + sesión    │                    │
+     │                     │◄───────────────────│                    │
+     │                     │                    │                    │
+     │                     │ 6. Guardar en      │                    │
+     │                     │    SesionOdoo      │                    │
+     │                     │    (Singleton)     │                    │
+     │                     │                    │                    │
+     │ 7. Abrir vista      │                    │                    │
+     │    principal        │                    │                    │
+     │◄────────────────────│                    │                    │
+     │                     │                    │                    │
+
+```
+
+**Datos que fluyen:**
+1. `usuario`, `contraseña` → desde UI al controlador
+2. `url`, `baseDatos`, `usuario`, `contraseña` → al servicio
+3. JSON-RPC con `{db, login, password}` → a Odoo
+4. `{uid, session_id, cookies}` → desde Odoo
+5. `SesionOdoo` almacena: url, baseDatos, usuarioId, nombreUsuario, contraseña
+
+---
+
+### Flujo 2: Carga de Facturas y Creación de Garantías
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│              FLUJO DE CARGA DE FACTURAS + CREACIÓN DE GARANTÍAS           │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  USUARIO         CONTROLADOR         ODOO SERVICE       MONGODB SERVICE
+     │                 │                    │                    │
+     │ 1. Click        │                    │                    │
+     │ "Actualizar"    │                    │                    │
+     │────────────────►│                    │                    │
+     │                 │                    │                    │
+     │                 │ 2. obtenerFacturas()                    │
+     │                 │───────────────────►│                    │
+     │                 │                    │                    │
+     │                 │                    │ 3. search()        │
+     │                 │                    │ account.move       │
+     │                 │                    │ [move_type=out_inv]│
+     │                 │                    │───────► ODOO       │
+     │                 │                    │◄─────── [ids]      │
+     │                 │                    │                    │
+     │                 │                    │ 4. read()          │
+     │                 │                    │ account.move       │
+     │                 │                    │ [name, partner,...]│
+     │                 │                    │───────► ODOO       │
+     │                 │                    │◄─────── [facturas] │
+     │                 │                    │                    │
+     │                 │                    │ 5. read()          │
+     │                 │                    │ account.move.line  │
+     │                 │                    │ [product, qty,...] │
+     │                 │                    │───────► ODOO       │
+     │                 │                    │◄─────── [líneas]   │
+     │                 │                    │                    │
+     │                 │ 6. List<Factura>   │                    │
+     │                 │    con líneas      │                    │
+     │                 │◄───────────────────│                    │
+     │                 │                    │                    │
+     │                 │ 7. Para cada línea:                     │
+     │                 │    ¿existe garantía?                    │
+     │                 │────────────────────────────────────────►│
+     │                 │                    │                    │
+     │                 │                    │    8. Buscar en    │
+     │                 │                    │    warranties por  │
+     │                 │                    │    lineaFacturaId  │
+     │                 │                    │                    │
+     │                 │◄────────────────────────────────────────│
+     │                 │                    │    9. null/Garantía│
+     │                 │                    │                    │
+     │                 │ 10. Si no existe:  │                    │
+     │                 │     crear Garantía │                    │
+     │                 │     (12 meses)     │                    │
+     │                 │────────────────────────────────────────►│
+     │                 │                    │                    │
+     │                 │                    │   11. Insert en    │
+     │                 │                    │   MongoDB          │
+     │                 │                    │                    │
+     │ 12. Actualizar  │                    │                    │
+     │     tablas UI   │                    │                    │
+     │◄────────────────│                    │                    │
+     │                 │                    │                    │
+
+```
+
+**Transformación de datos Odoo → MongoDB:**
+
+```
+ODOO (account.move)                    MONGODB (warranties)
+────────────────────                   ────────────────────
+id: 123                        ───►    facturaId: 123
+name: "INV/2026/0001"          ───►    nombreFactura: "INV/2026/0001"
+partner_id: [1, "Cliente S.L."]───►    nombreCliente: "Cliente S.L."
+invoice_date: "2026-01-07"     ───►    fechaCompra: ISODate(...)
+                                       fechaInicioGarantia: ISODate(...)
+                                       fechaFinGarantia: ISODate(...+12 meses)
+
+ODOO (account.move.line)
+────────────────────────
+id: 456                        ───►    lineaFacturaId: 456
+product_id: [10, "Laptop HP"]  ───►    productoId: 10
+                                       nombreProducto: "Laptop HP"
+quantity: 1.0                          (usado para validar)
+price_total: 500.00                    (no se guarda)
+```
+
+---
+
+### Flujo 3: Consulta de Garantías
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                      FLUJO DE CONSULTA DE GARANTÍAS                       │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  USUARIO              CONTROLADOR              MONGODB
+     │                      │                      │
+     │ 1. Seleccionar       │                      │
+     │    pestaña Garantías │                      │
+     │─────────────────────►│                      │
+     │                      │                      │
+     │                      │ 2. obtenerTodas()    │
+     │                      │─────────────────────►│
+     │                      │                      │
+     │                      │                      │ 3. db.warranties
+     │                      │                      │    .find({})
+     │                      │                      │
+     │                      │ 4. List<Garantía>    │
+     │                      │◄─────────────────────│
+     │                      │                      │
+     │                      │ 5. Para cada una:    │
+     │                      │    actualizarEstado()│
+     │                      │    (calcular si      │
+     │                      │    expiró)           │
+     │                      │                      │
+     │ 6. Mostrar en tabla  │                      │
+     │◄─────────────────────│                      │
+     │                      │                      │
+     │ 7. Filtrar por       │                      │
+     │    estado "Activas"  │                      │
+     │─────────────────────►│                      │
+     │                      │                      │
+     │                      │ 8. obtenerPorEstado  │
+     │                      │    ("ACTIVA")        │
+     │                      │─────────────────────►│
+     │                      │                      │
+     │                      │                      │ 9. db.warranties
+     │                      │                      │    .find({estado:
+     │                      │                      │     "ACTIVA"})
+     │                      │                      │
+     │                      │ 10. List<Garantía>   │
+     │                      │◄─────────────────────│
+     │                      │                      │
+     │ 11. Actualizar tabla │                      │
+     │◄─────────────────────│                      │
+
+```
+
+---
+
+### Flujo 4: Estadísticas
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│                       FLUJO DE ESTADÍSTICAS                               │
+└──────────────────────────────────────────────────────────────────────────┘
+
+                         DATOS ORIGEN                    GRÁFICO DESTINO
+                         ────────────                    ───────────────
+
+┌─────────────────┐
+│  listaFacturas  │      Agrupar por                   ┌─────────────────┐
+│  (de Odoo)      │      nombreCliente    ───────────► │  BarChart       │
+│                 │      Sumar montoTotal              │  Ventas/Cliente │
+└─────────────────┘                                    └─────────────────┘
+
+
+┌─────────────────┐
+│ servicioMongoDB │      contarActivas()               ┌─────────────────┐
+│                 │      contarExpiradas()  ─────────► │  PieChart       │
+│                 │      contarPorExpirar()            │  Estados        │
+└─────────────────┘                                    └─────────────────┘
+
+
+┌─────────────────┐
+│  listaFacturas  │      Agrupar por                   ┌─────────────────┐
+│  (de Odoo)      │      mes/año          ───────────► │  LineChart      │
+│                 │      Sumar montoTotal              │  Ventas/Mes     │
+└─────────────────┘                                    └─────────────────┘
+
+```
+
+**Cálculo de datos para gráficos:**
+
+```java
+// Ventas por Cliente (BarChart)
+Map<String, Double> ventasPorCliente = listaFacturas.stream()
+    .collect(Collectors.groupingBy(
+        Factura::getNombreCliente,
+        Collectors.summingDouble(Factura::getMontoTotal)
+    ));
+
+// Estado de Garantías (PieChart)
+long activas = servicioMongoDB.contarGarantiasActivas();
+long expiradas = servicioMongoDB.contarGarantiasExpiradas();
+long porExpirar = servicioMongoDB.contarGarantiasPorExpirar();
+
+// Ventas Mensuales (LineChart)
+Map<YearMonth, Double> ventasPorMes = listaFacturas.stream()
+    .filter(f -> f.getFechaFactura() != null)
+    .collect(Collectors.groupingBy(
+        f -> YearMonth.from(f.getFechaFactura()),
+        Collectors.summingDouble(Factura::getMontoTotal)
+    ));
+```
+
+---
+
+### Resumen de Transformaciones de Datos
+
+| Origen | Transformación | Destino |
+|--------|----------------|---------|
+| Odoo `account.move` | `mapearAFactura()` | `Factura` (modelo Java) |
+| Odoo `account.move.line` | `obtenerLineasFactura()` | `LineaFactura` (modelo Java) |
+| `Factura` + `LineaFactura` | `new Garantía(factura, linea, 12)` | `Garantía` (modelo Java) |
+| `Garantía` | `garantíaADocumento()` | MongoDB `Document` |
+| MongoDB `Document` | `documentoAGarantía()` | `Garantía` (modelo Java) |
+| `List<Factura>` | agrupación + suma | Datos para gráficos |
+| `List<Garantía>` | conteo por estado | Datos para PieChart |
+
+## 📝 Licencia
+
+Proyecto privado - Todos los derechos reservados.
+
+---
+
+Desarrollado con ❤️ usando JavaFX
